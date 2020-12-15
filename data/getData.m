@@ -29,4 +29,25 @@ for i = 1:size(data_struct.data)
     data_struct.data(i) = timestamp_array(1);
 end
 
+% define vectors with daily variation 
+% nuovi_isolamento_domicialiare
+% nuovi_dimessi_guariti
+% nuovi_deceduti
+data_struct.nuovi_isolamento_domiciliare(1) = data_struct.isolamento_domiciliare(1);
+data_struct.nuovi_dimessi_guariti(1) = data_struct.dimessi_guariti(1);
+data_struct.nuovi_deceduti(1) = data_struct.deceduti(1);
+
+for i = 2:size(data_struct.data)
+    data_struct.nuovi_isolamento_domiciliare(i)=...
+        data_struct.isolamento_domiciliare(i)-data_struct.isolamento_domiciliare(i-1);
+    data_struct.nuovi_dimessi_guariti(i)=...
+        data_struct.dimessi_guariti(i)-data_struct.dimessi_guariti(i-1);
+    data_struct.nuovi_deceduti(i)=...
+        data_struct.deceduti(i)-data_struct.nuovi_deceduti(i-1);
+end
+
+data_struct.nuovi_isolamento_domiciliare = data_struct.nuovi_isolamento_domiciliare';
+data_struct.nuovi_dimessi_guariti = data_struct.nuovi_dimessi_guariti';
+data_struct.nuovi_deceduti = data_struct.nuovi_deceduti';
+
 
