@@ -1,11 +1,12 @@
-function dx = SEIR(t,x,lambda,alpha,gamma)
+function dx = SEIR(t,x,p)
 % TODO
 % Input 
 % t:        time vector
 % x:        variables vector
+% p:        vector containing lambda, alpha and gamma
 % lambda:   λ0/S(0)>0 is the infection rate 
 %           rescaled by the initial number of 
-%           susceptible individualsS(0)
+%           susceptible individuals S(0)
 % alpha:    the inverse of the incubation period
 % gamma:    recovery/death rate
 
@@ -17,6 +18,10 @@ function dx = SEIR(t,x,lambda,alpha,gamma)
 % E' = lambda*S*I - alpha*E
 % I' = alpha*E - gamma*I
 % R'= gamma*I
+
+lambda = p(1);
+alpha = p(2);
+gamma = p(3);
 
 dx = zeros(4,1);
 

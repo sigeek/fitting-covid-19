@@ -46,8 +46,13 @@ for i = 2:size(data_struct.data)
         data_struct.deceduti(i)-data_struct.nuovi_deceduti(i-1);
 end
 
-data_struct.nuovi_isolamento_domiciliare = data_struct.nuovi_isolamento_domiciliare';
-data_struct.nuovi_dimessi_guariti = data_struct.nuovi_dimessi_guariti';
-data_struct.nuovi_deceduti = data_struct.nuovi_deceduti';
+data_struct.nuovi_positivi = data_struct.nuovi_positivi';
+
+%for i = 1:size(data_struct)
+%    data_struct(i) = cast(data_struct(i), 'double');
+%end
+%data_struct.nuovi_isolamento_domiciliare = data_struct.nuovi_isolamento_domiciliare';
+%data_struct.nuovi_dimessi_guariti = data_struct.nuovi_dimessi_guariti';
+%data_struct.nuovi_deceduti = data_struct.nuovi_deceduti';
 
 
