@@ -1,5 +1,4 @@
 function dx = SEIR(t,x,p)
-% TODO
 % Input 
 % t:        time vector
 % x:        variables vector

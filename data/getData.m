@@ -36,6 +36,7 @@ end
 data_struct.nuovi_isolamento_domiciliare(1) = data_struct.isolamento_domiciliare(1);
 data_struct.nuovi_dimessi_guariti(1) = data_struct.dimessi_guariti(1);
 data_struct.nuovi_deceduti(1) = data_struct.deceduti(1);
+data_struct.nuovi_ospedalizzati(1) = data_struct.totale_ospedalizzati(1);
 
 for i = 2:size(data_struct.data)
     data_struct.nuovi_isolamento_domiciliare(i)=...
@@ -44,6 +45,8 @@ for i = 2:size(data_struct.data)
         data_struct.dimessi_guariti(i)-data_struct.dimessi_guariti(i-1);
     data_struct.nuovi_deceduti(i)=...
         data_struct.deceduti(i)-data_struct.nuovi_deceduti(i-1);
+    data_struct.nuovi_ospedalizzati(i)=...
+        data_struct.totale_ospedalizzati(i)-data_struct.totale_ospedalizzati(i-1);
 end
 
 data_struct.nuovi_positivi = data_struct.nuovi_positivi';
