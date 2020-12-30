@@ -1,4 +1,4 @@
-function err = fit_SIR(T,data,p,X0)
+function err = err_SIR(T,data,p,X0)
     [t_res,x_res] = ode23s(@(t,x) SIR(t,x, p), T, X0);  
     
    

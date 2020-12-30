@@ -1,4 +1,4 @@
-function err = fit_SEIR(T,data,p,X0)
+function err = err_SEIR(T,data,p,X0)
 [t_res,x_res] = ode23s(@(t,x) SEIR(t,x, p), T, X0);  
 
 E = x_res(:, 2); 
