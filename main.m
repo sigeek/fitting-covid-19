@@ -9,6 +9,7 @@ addpath('./models/');
 addpath('./models/SIR');
 addpath('./models/SEIR');
 addpath('./models/SEIRH');
+addpath('./models/SEIRD');
 
 %retrieve the data struct
 data = getData;
@@ -41,8 +42,8 @@ X_SIR = [S, I, R];
 X_ad_SIR = [S, I, R]/N;
 
 % initial conditions
-t0 = find(dates=="2020-10-08"); 
-tf = find(dates=="2020-11-05"); 
+t0 = find(dates=="2020-10-08"); % 10-08
+tf = find(dates=="2020-11-05"); % 11-05
 I0 = I(t0);
 R0 = R(t0);
 S0 = N-I0-R0;
@@ -87,7 +88,7 @@ S0 = N;
 % gamma = 0.37
 % Lambda0 = R0*gamma
 %lambda0 = 0.962/S0;
-t_incubation = 5.1; %3, 5.1 da verificare con paper con studi su Italia
+t_incubation = 5.1; %5.1 da verificare con paper con studi su Italia
 alpha0=1/t_incubation;
 %gamma0 = 0.37; 
 % gamma0 da paper 0.37
@@ -101,6 +102,65 @@ p_SEIR = fit_SEIR(X_ad_SEIR, X0_ad_SEIR, p0_SEIR, t0, tf);
 
 %% PLOT SEIR
 plot_SEIR(X_SEIR, X0_ad_SEIR, N, p_SEIR, t0, tf, tp);
+
+%% FITTING SEIRD MODEL
+
+S = N-E-I-R;
+D = cast(data.deceduti, 'double');
+X_SEIRD = [S, E, I, R, D];
+X_ad_SEIRD = [S, E, I, R, D]/N;
+
+E0 = E(t0);
+I0 = I(t0);
+%H0 = H(t0);
+R0 = R(t0);
+D0 = D(t0);
+X0_ad_SEIRD = [S0 E0 I0 R0 D0]/N;
+
+lambda0 = p_SEIR(1);
+alpha0 = p_SEIR(2);
+gamma0 = p_SEIR(3);
+d0 = 0.04;
+ro0 = 1/9;
+
+p0_SEIRD = [lambda0, alpha0, gamma0, d0, ro0 ];
+
+p_SEIRD = fit_SEIRD(X_ad_SEIRD, X0_ad_SEIRD, p0_SEIRD, t0, tf);
+p_SEIRD
+%% PLOT SEIRD
+plot_SEIRD(X_SEIRD, X0_ad_SEIRD, N, p_SEIRD, t0, tf, tp);
+%% FITTING SEIRD MODEL, longer period
+
+S = N-E-I-R;
+D = cast(data.deceduti, 'double');
+X_SEIRD = [S, E, I, R, D];
+X_ad_SEIRD = [S, E, I, R, D]/N;
+
+t0 = find(dates=="2020-10-08"); 
+tf = find(dates=="2020-11-30"); 
+
+E0 = E(t0);
+I0 = I(t0);
+%H0 = H(t0);
+R0 = R(t0);
+D0 = D(t0);
+X0_ad_SEIRD = [S0 E0 I0 R0 D0]/N;
+
+lambda0 = 0.962/S0*N;
+gamma0 = 0.37; 
+t_incubation = 5.1; %5.1 da verificare con paper con studi su Italia
+alpha0=1/t_incubation;
+d0 = 0.04;
+ro0 = 1/9;
+
+p0_SEIRD = [lambda0, alpha0, gamma0, d0, ro0];
+
+p_SEIRD = fit_SEIRD(X_ad_SEIRD, X0_ad_SEIRD, p0_SEIRD, t0, tf);
+p_SEIRD
+
+%% PLOT SEIRD
+plot_SEIRD(X_SEIRD, X0_ad_SEIRD, N, p_SEIRD, t0, tf, tp);
+
 %% FITTING SEIRH MODEL
 
 S = N-E-I-R;
@@ -109,7 +169,7 @@ X_ad_SEIRH = [S, E, I, R]/N;
 
 E0 = E(t0);
 I0 = I(t0);
-H0 = H(t0);
+%H0 = H(t0);
 R0 = R(t0);
 S0 = S(t0);
 X0_ad_SEIRH = [S0 E0 I0 R0]/N;
