@@ -36,15 +36,20 @@ for i = 1:size(tp, 2)
     RMSE_I_test = sqrt(mean((I(tf:tf+tp(i))-I_pred(len_train:len_train+tp(i))).^2));
     RMSE_R_test = sqrt(mean((R(tf:tf+tp(i))-R_pred(len_train:len_train+tp(i))).^2));
     RMSE_D_test = sqrt(mean((D(tf:tf+tp(i))-D_pred(len_train:len_train+tp(i))).^2));
+    
+    if i == 1
+        fprintf("--- SEIRD MODEL --- \n");
+        fprintf("RMSE train E: %f \n", RMSE_E_train);
+        fprintf("RMSE train I: %f \n", RMSE_I_train);
+        fprintf("RMSE train R: %f \n", RMSE_R_train);
+        fprintf("RMSE train D: %f \n", RMSE_D_train);
+    end
     fprintf("%d days forecasts errors \n", tp(i));
-    fprintf("RMSE train E: %f \n", RMSE_E_train);
-    fprintf("RMSE train I: %f \n", RMSE_I_train);
-    fprintf("RMSE train R: %f \n", RMSE_R_train);
     fprintf("RMSE train R: %f \n", RMSE_D_train);
     fprintf("RMSE test E: %f \n", RMSE_E_test);
     fprintf("RMSE test I: %f \n", RMSE_I_test);
     fprintf("RMSE test R: %f \n", RMSE_R_test);
-    fprintf("RMSE test R: %f \n", RMSE_D_train);
+    fprintf("RMSE test D: %f \n", RMSE_D_test);
 
     figure(1)
     subplot(1,3,i);

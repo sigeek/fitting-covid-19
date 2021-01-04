@@ -32,10 +32,13 @@ for i = 1:size(tp, 2)
     RMSE_E_test = sqrt(mean((E(tf:tf+tp(i))-E_pred(len_train:len_train+tp(i))).^2));
     RMSE_I_test = sqrt(mean((I(tf:tf+tp(i))-I_pred(len_train:len_train+tp(i))).^2));
     RMSE_R_test = sqrt(mean((R(tf:tf+tp(i))-R_pred(len_train:len_train+tp(i))).^2));
+    if i == 1
+        fprintf("--- SEIR MODEL --- \n");
+        fprintf("RMSE train E: %f \n", RMSE_E_train);
+        fprintf("RMSE train I: %f \n", RMSE_I_train);
+        fprintf("RMSE train R: %f \n", RMSE_R_train);
+    end
     fprintf("%d days forecasts errors \n", tp(i));
-    fprintf("RMSE train E: %f \n", RMSE_E_train);
-    fprintf("RMSE train I: %f \n", RMSE_I_train);
-    fprintf("RMSE train R: %f \n", RMSE_R_train);
     fprintf("RMSE test E: %f \n", RMSE_E_test);
     fprintf("RMSE test I: %f \n", RMSE_I_test);
     fprintf("RMSE test R: %f \n", RMSE_R_test);
