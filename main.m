@@ -10,6 +10,7 @@ addpath('./models/SIR');
 addpath('./models/SEIR');
 addpath('./models/SEIRH');
 addpath('./models/SEIRD');
+addpath('./models/SEIIR');
 
 %retrieve the data struct
 data = getData;
@@ -185,3 +186,39 @@ p_SEIRH = fit_SEIRH(X_ad_SEIRH, X0_ad_SEIRH, p0_SEIRH, t0, tf);
 p_SEIRH
 %% PLOT SEIRH
 plot_SEIRH(X_SEIRH, X0_ad_SEIRH, N, p_SEIRH, t0, tf, tp);
+%% FITTING SEIIR MODEL
+
+S = N-E-I-R;
+
+%f presa dal paper
+f0 = 0.4264;
+
+I_a = (1-f0)*I;
+I_s = f0*I;
+
+X_SEIIR = [S, E, I_a, I_s, R];
+X_ad_SEIIR = [S*N, E, I_a, I_s, R]/N;
+
+E0 = E(t0);
+I_a0 = I_a(t0);
+I_s0 = I_s(t0);
+R0 = R(t0);
+X0_ad_SEIIR = [S0 E0 I_a0 I_s0 R0]/N;
+
+alpha0 = p_SEIR(2);
+gamma0 = p_SEIR(3);
+
+lambda_a0 = 0;
+lambda_s0 = 0.675281;
+lambda_e0 = 0.251883;
+
+%p0_SEIIR = [f0, alpha0, gamma0, lambda_a0, lambda_s0 ];
+p0_SEIIR = [f0, alpha0, gamma0, lambda_a0, lambda_s0, lambda_e0 ];
+
+p_SEIIR = fit_SEIIR(X_ad_SEIIR, X0_ad_SEIIR, p0_SEIIR, t0, tf);
+
+p_SEIIR
+
+%% PLOT SEIIR
+plot_SEIIR(X_SEIIR, X0_ad_SEIIR, N, p_SEIIR, t0, tf, tp);
+
