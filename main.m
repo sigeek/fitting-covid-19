@@ -92,7 +92,8 @@ S0 = N;
 % Lambda0 = R0*gamma
 %beta0 = 0.962/S0;
 t_incubation = 5.1; %5.1 da verificare con paper con studi su Italia
-alpha0=1/t_incubation;
+alpha = 2.87;
+%alpha0=1/t_incubation;
 %gamma0 = 0.37; 
 % gamma0 da paper 0.37
 
