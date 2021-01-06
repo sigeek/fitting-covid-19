@@ -26,7 +26,7 @@ S0 = N;
 % R0 = 2.6
 % gamma = 0.37
 % Lambda0 = R0*gamma
-beta0 = 0.962/S0;
+beta0 = 0.962/S0; %0.962
 gamma0 = 0.37; 
 
 % adimensional SEIR model for fitting
@@ -37,8 +37,8 @@ gamma0 = 0.37;
 % i' = (beta*N)*(S/N)*(I/N) - (gamma)*(I/N) = (beta*N)*s*i - gamma*i
 % r' = gamma*(I/N) = gamma*i
 
-I = cast(data.totale_positivi, 'double');
-R = cast(data.dimessi_guariti, 'double');
+I = cast((data.totale_positivi), 'double');
+R = cast((data.dimessi_guariti + data.deceduti), 'double');
 S = N-I-R;
 X_SIR = [S, I, R];
 X_ad_SIR = [S, I, R]/N;
@@ -55,8 +55,12 @@ beta0 = beta0*N;
 p0_SIR = [beta0, gamma0];
 
 p_SIR = fit_SIR(X_ad_SIR, X0_ad_SIR, p0_SIR,t0,tf);
+
+p_SIR
+
+%R_index = p_SIR(1)/ p_SIR(2)
 %% PLOT SIR
-tp = [7, 14, 21];
+tp = [7,14, 21];
 plot_SIR(X_SIR, X0_ad_SIR, N, p_SIR, t0, tf, tp);
 % RMSE train I: 243733.947542 
 % RMSE train R: 265378.113719
@@ -139,39 +143,7 @@ plot_SEIRD(X_SEIRD, X0_ad_SEIRD, N, p_SEIRD, t0, tf, tp);
 % RMSE train E: 24373.394744 
 % RMSE train I: 243733.947545 
 % RMSE train R: 265378.113719 
-% RMSE train D: 37369.497776 
-%% FITTING SEIRD MODEL, longer period
-
-S = N-E-I-R;
-D = cast(data.deceduti, 'double');
-X_SEIRD = [S, E, I, R, D];
-X_ad_SEIRD = [S, E, I, R, D]/N;
-
-t0 = find(dates=="2020-10-08"); 
-tf = find(dates=="2020-11-30"); 
-
-E0 = E(t0);
-I0 = I(t0);
-%H0 = H(t0);
-R0 = R(t0);
-D0 = D(t0);
-X0_ad_SEIRD = [S0 E0 I0 R0 D0]/N;
-
-beta0 = 0.962/S0*N;
-gamma0 = 0.37; 
-t_incubation = 5.1; %5.1 da verificare con paper con studi su Italia
-alpha0=1/t_incubation;
-d0 = 0.04;
-ro0 = 1/9;
-
-p0_SEIRD = [beta0, alpha0, gamma0, d0, ro0];
-
-p_SEIRD = fit_SEIRD(X_ad_SEIRD, X0_ad_SEIRD, p0_SEIRD, t0, tf);
-p_SEIRD
-
-%% PLOT SEIRD
-plot_SEIRD(X_SEIRD, X0_ad_SEIRD, N, p_SEIRD, t0, tf, tp);
-
+% RMSE train D: 37369.497776
 %% FITTING SEIRH MODEL
 
 S = N-E-I-R;
@@ -218,7 +190,7 @@ X0_ad_SEIIR = [S0 E0 I_a0 I_s0 R0]/N;
 alpha0 = p_SEIR(2);
 gamma0 = p_SEIR(3);
 
-lambda_a0 = 0;
+lambda_a0 = 0.05;
 lambda_s0 = 0.675281;
 lambda_e0 = 0.251883;
 
@@ -236,7 +208,8 @@ plot_SEIIR(X_SEIIR, X0_ad_SEIIR, N, p_SEIIR, t0, tf, tp);
 
 S = N-E-I-R;
 
-H = cast((data.totale_ospedalizzati), 'double');
+R = cast(data.dimessi_guariti, 'double');
+H = cast(data.totale_ospedalizzati, 'double');
 D = cast(data.deceduti, 'double');
 
 X_SEIIRHD = [S, E, I_a, I_s, H, R, D];
@@ -253,13 +226,14 @@ X0_ad_SEIIRHD = [S0 E0 I_a0 I_s0 H0 R0 D0]/N;
 f0 = p_SEIIR(1);
 alpha0 = p_SEIIR(2);
 gamma0 = p_SEIIR(3);
-lambda_a0 = p_SEIIR (4);
+lambda_a0 = p_SEIIR(4);
 lambda_s0 = p_SEIIR(5);
 lambda_e0 = p_SEIIR(6);
 
-nu_e0 = 0;
-nu_s0 = 0;
-mu0 = 0.02013;
+%report settimanali ISS tasso ricovero
+nu_e0 = 0.008;
+nu_s0 = 0.08;
+mu0 = 0.0204;
 
 p0_SEIIRHD = [f0, alpha0, gamma0, lambda_a0, lambda_s0, lambda_e0, nu_e0, nu_s0, mu0];
 
