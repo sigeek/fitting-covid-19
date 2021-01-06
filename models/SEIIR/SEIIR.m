@@ -32,7 +32,6 @@ gamma = p(3);
 lambda_a = p(4);
 lambda_s = p(5);
 lambda_e = p(6);
-omega = p(7);
 
 dx = zeros(5,1);
 

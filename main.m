@@ -11,6 +11,7 @@ addpath('./models/SEIR');
 addpath('./models/SEIRH');
 addpath('./models/SEIRD');
 addpath('./models/SEIIR');
+addpath('./models/SEIIRHD');
 
 %retrieve the data struct
 data = getData;
@@ -92,9 +93,8 @@ S0 = N;
 % Lambda0 = R0*gamma
 %beta0 = 0.962/S0;
 t_incubation = 5.1; %5.1 da verificare con paper con studi su Italia
-alpha = 2.87;
-%alpha0=1/t_incubation;
-%gamma0 = 0.37; 
+alpha0=1/t_incubation;
+% gamma0 = 0.37; 
 % gamma0 da paper 0.37
 
 % initial beta and gamma are taken from the previous simulation results 
@@ -207,7 +207,7 @@ I_a = (1-f0)*I;
 I_s = f0*I;
 
 X_SEIIR = [S, E, I_a, I_s, R];
-X_ad_SEIIR = [S*N, E, I_a, I_s, R]/N;
+X_ad_SEIIR = [S, E, I_a, I_s, R]/N;
 
 E0 = E(t0);
 I_a0 = I_a(t0);
@@ -232,3 +232,40 @@ p_SEIIR
 %% PLOT SEIIR
 plot_SEIIR(X_SEIIR, X0_ad_SEIIR, N, p_SEIIR, t0, tf, tp);
 
+%% FITTING SEIIRHD MODEL
+
+S = N-E-I-R;
+
+H = cast((data.totale_ospedalizzati), 'double');
+D = cast(data.deceduti, 'double');
+
+X_SEIIRHD = [S, E, I_a, I_s, H, R, D];
+X_ad_SEIIRHD = [S, E, I_a, I_s, H, R, D]/N;
+
+E0 = E(t0);
+I_a0 = I_a(t0);
+I_s0 = I_s(t0);
+H0 = H(t0);
+R0 = R(t0);
+D0 = D(t0);
+X0_ad_SEIIRHD = [S0 E0 I_a0 I_s0 H0 R0 D0]/N;
+
+f0 = p_SEIIR(1);
+alpha0 = p_SEIIR(2);
+gamma0 = p_SEIIR(3);
+lambda_a0 = p_SEIIR (4);
+lambda_s0 = p_SEIIR(5);
+lambda_e0 = p_SEIIR(6);
+
+nu_e0 = 0;
+nu_s0 = 0;
+mu0 = 0.02013;
+
+p0_SEIIRHD = [f0, alpha0, gamma0, lambda_a0, lambda_s0, lambda_e0, nu_e0, nu_s0, mu0];
+
+p_SEIIRHD = fit_SEIIRHD(X_ad_SEIIRHD, X0_ad_SEIIRHD, p0_SEIIRHD, t0, tf);
+
+p_SEIIRHD
+
+%% PLOT SEIIR
+plot_SEIIRHD(X_SEIIRHD, X0_ad_SEIIRHD, N, p_SEIIRHD, t0, tf, tp);
