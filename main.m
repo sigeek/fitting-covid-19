@@ -6,26 +6,31 @@ close all
 % add folders to path
 addpath('./data/');
 addpath('./models/');
+addpath('./results/');
 addpath('./models/SIR');
 addpath('./models/SEIR');
-addpath('./models/SEIRH');
-addpath('./models/SEIRD');
 addpath('./models/SEIIR');
 addpath('./models/SEIIRHD');
 
 %retrieve the data struct
-data = getData;
-dates = data.data;
+[data, dates] = getData;
+sizes = size(dates);
+size_data = sizes(2);
 N = 60.*10^6;
+
+%% PLOT OVERVIEW DATA
+plot_data(data, dates, N, 1, size_data, "complete");
+
+%% PLOT OCTOBER DATA
+t0 = find(dates=="08-Oct-2020"); % 10-08
+tf = find(dates=="05-Nov-2020"); % 11-05
+plot_data(data, dates(t0:tf), N, t0, tf, "october");
 %% FITTING SIR MODEL
 % [S, I, R]
 
 S0 = N;
 % paper SEIR
 %beta0 = 1 / S0;
-% R0 = 2.6
-% gamma = 0.37
-% Lambda0 = R0*gamma
 beta0 = 0.962/S0; %0.962
 gamma0 = 0.37; 
 
@@ -38,14 +43,14 @@ gamma0 = 0.37;
 % r' = gamma*(I/N) = gamma*i
 
 I = cast((data.totale_positivi), 'double');
-R = cast((data.dimessi_guariti + data.deceduti), 'double');
+R = cast((data.dimessi_guariti), 'double');
 S = N-I-R;
 X_SIR = [S, I, R];
 X_ad_SIR = [S, I, R]/N;
 
 % initial conditions
-t0 = find(dates=="2020-10-08"); % 10-08
-tf = find(dates=="2020-11-05"); % 11-05
+t0 = find(dates=="08-Oct-2020"); % 10-08
+tf = find(dates=="05-Nov-2020"); % 11-05
 I0 = I(t0);
 R0 = R(t0);
 S0 = N-I0-R0;
@@ -88,18 +93,9 @@ R0 = R(t0);
 S0 = N-E0-I0-R0;
 X0_ad_SEIR = [S0 E0 I0 R0]/N;
 
-
-% DA RIVEDERE PARAMETRI INIZIALI
 S0 = N;
-%beta0 = 1 / S0;
-% R0 = 2.6
-% gamma = 0.37
-% Lambda0 = R0*gamma
-%beta0 = 0.962/S0;
-t_incubation = 5.1; %5.1 da verificare con paper con studi su Italia
+t_incubation = 5.1; %paper SEIR
 alpha0=1/t_incubation;
-% gamma0 = 0.37; 
-% gamma0 da paper 0.37
 
 % initial beta and gamma are taken from the previous simulation results 
 beta0 = p_SIR(1);
@@ -113,61 +109,7 @@ plot_SEIR(X_SEIR, X0_ad_SEIR, N, p_SEIR, t0, tf, tp);
 % RMSE train E: 24373.394744 
 % RMSE train I: 243733.947545 
 % RMSE train R: 265378.113719 
-%% FITTING SEIRD MODEL
 
-R = cast(data.dimessi_guariti, 'double');
-D = cast(data.deceduti, 'double');
-S = N-E-I-R-D;
-X_SEIRD = [S, E, I, R, D];
-X_ad_SEIRD = [S, E, I, R, D]/N;
-
-E0 = E(t0);
-I0 = I(t0);
-%H0 = H(t0);
-R0 = R(t0);
-D0 = D(t0);
-X0_ad_SEIRD = [S0 E0 I0 R0 D0]/N;
-
-beta0 = p_SEIR(1);
-alpha0 = p_SEIR(2);
-gamma0 = p_SEIR(3);
-d0 = 0.04;
-ro0 = 1/9;
-
-p0_SEIRD = [beta0, alpha0, gamma0, d0, ro0 ];
-
-p_SEIRD = fit_SEIRD(X_ad_SEIRD, X0_ad_SEIRD, p0_SEIRD, t0, tf);
-p_SEIRD
-%% PLOT SEIRD
-plot_SEIRD(X_SEIRD, X0_ad_SEIRD, N, p_SEIRD, t0, tf, tp);
-% RMSE train E: 24373.394744 
-% RMSE train I: 243733.947545 
-% RMSE train R: 265378.113719 
-% RMSE train D: 37369.497776
-%% FITTING SEIRH MODEL
-
-S = N-E-I-R;
-X_SEIRH = [S, E, I, R];
-X_ad_SEIRH = [S, E, I, R]/N;
-
-E0 = E(t0);
-I0 = I(t0);
-%H0 = H(t0);
-R0 = R(t0);
-S0 = S(t0);
-X0_ad_SEIRH = [S0 E0 I0 R0]/N;
-
-beta0 = p_SEIR(1);
-alpha0 = p_SEIR(2);
-gamma0 = p_SEIR(3);
-%h0 = (0.084+0.088+0.093+0.08)/4;
-h0 = 0.0863;
-p0_SEIRH = [beta0, alpha0, gamma0, h0];
-
-p_SEIRH = fit_SEIRH(X_ad_SEIRH, X0_ad_SEIRH, p0_SEIRH, t0, tf);
-p_SEIRH
-%% PLOT SEIRH
-plot_SEIRH(X_SEIRH, X0_ad_SEIRH, N, p_SEIRH, t0, tf, tp);
 %% FITTING SEIIR MODEL
 
 S = N-E-I-R;
@@ -241,5 +183,5 @@ p_SEIIRHD = fit_SEIIRHD(X_ad_SEIIRHD, X0_ad_SEIIRHD, p0_SEIIRHD, t0, tf);
 
 p_SEIIRHD
 
-%% PLOT SEIIR
+%% PLOT SEIIRHD
 plot_SEIIRHD(X_SEIIRHD, X0_ad_SEIIRHD, N, p_SEIIRHD, t0, tf, tp);

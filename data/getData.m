@@ -1,4 +1,4 @@
-function [data_struct] = getData()
+function [data_struct, dates] = getData()
 %
 % Output: struct containing all the COVID-19 data about Italy
 % The offical data is taken from 'Presidenza del Consiglio dei Ministri - Dipartimento della Protezione Civile '
@@ -24,9 +24,12 @@ data_struct = rmfield(data_struct, 'note_casi');
 
 % date format
 % from YYYY-MM-DDThh-mm to YYYY-MM-DD
+
 for i = 1:size(data_struct.data)
     timestamp_array = split(data_struct.data(i),"T");
-    data_struct.data(i) = timestamp_array(1);
+    date = timestamp_array(1);
+    date = datetime(date,'InputFormat','yyyy-MM-dd');
+    dates(i) = date;
 end
 
 % define vectors with daily variation 
