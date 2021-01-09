@@ -1,10 +1,11 @@
-function plot_SEIR(X, X0, N, p, t0, tf, tp)
+function plot_SEIR(X, X0, N, p, dates, t0, tf, tp)
 
 % Input 
 % X       data: S, I, R
 % X0      initial conditions: S0, I0, R0
 % N       number of individuals (Italian population)
 % p       estimated values of the coefficients of the model
+% dates   time vector
 % t0      time at which the fitting starts
 % tf      time at which the fitting ends  
 % tp      vector containing the times for the predictions
@@ -42,21 +43,28 @@ for i = 1:size(tp, 2)
     fprintf("RMSE test E: %f \n", RMSE_E_test);
     fprintf("RMSE test I: %f \n", RMSE_I_test);
     fprintf("RMSE test R: %f \n", RMSE_R_test);
+    
+    x0=100;
+    y0=100;
+    width=1200;
+    height=600;
+    set(gcf,'position',[x0,y0,width,height]);
 
     figure(1)
     subplot(1,3,i);
-    xline(tf,'--m');hold on;
-    plot(t0:tf+tp(i), E(t0:tf+tp(i)),'bo');hold on; 
-    plot(t,N*E_pred,'b', 'LineWidth',2);
-    plot(t0:tf+tp(i), I(t0:tf+tp(i)),'ro');hold on; 
-    plot(t,N*I_pred,'r', 'LineWidth',2);
-    plot(t0:tf+tp(i), R(t0:tf+tp(i)),'go');hold on;
-    plot(t, N*R_pred,'g', 'LineWidth',2);
-    xlabel('Days');ylabel('Number of individuals');
+    xline(dates(tf),'--m');hold on;
+    plot(dates(t0:tf+tp(i)), E(t0:tf+tp(i)),'bo');hold on; 
+    plot(dates(t),N*E_pred,'b', 'LineWidth',2);
+    plot(dates(t0:tf+tp(i)), I(t0:tf+tp(i)),'ro');hold on; 
+    plot(dates(t),N*I_pred,'r', 'LineWidth',2);
+    plot(dates(t0:tf+tp(i)), R(t0:tf+tp(i)),'go');hold on;
+    plot(dates(t), N*R_pred,'g', 'LineWidth',2);
+    xlabel('time');ylabel('Number of individuals');
     legend('Start forecast', 'E (reported)','E (fitted)',...
     'I (reported)','I (fitted)', 'R (reported)', 'R (fitted)',...
     'Location', 'northwest');
     title(sprintf('SEIR: %d days forecasts', tp(i)));
-    set(gca,'FontSize',12)
+    set(gca,'XLim',[dates(t0), dates(tf+tp(i))]);
+    saveas(gcf,'./results/SEIR_fitting.png')
 
 end

@@ -29,9 +29,7 @@ plot_data(data, dates(t0:tf), N, t0, tf, "october");
 % [S, I, R]
 
 S0 = N;
-% paper SEIR
-%beta0 = 1 / S0;
-beta0 = 0.962/S0; %0.962
+beta0 = 0.962/S0; 
 gamma0 = 0.37; 
 
 % adimensional SEIR model for fitting
@@ -60,15 +58,11 @@ beta0 = beta0*N;
 p0_SIR = [beta0, gamma0];
 
 p_SIR = fit_SIR(X_ad_SIR, X0_ad_SIR, p0_SIR,t0,tf);
-
-p_SIR
-
+%p_SIR
 %R_index = p_SIR(1)/ p_SIR(2)
 %% PLOT SIR
 tp = [7,14, 21];
-plot_SIR(X_SIR, X0_ad_SIR, N, p_SIR, t0, tf, tp);
-% RMSE train I: 243733.947542 
-% RMSE train R: 265378.113719
+plot_SIR(X_SIR, X0_ad_SIR, N, p_SIR, dates, t0, tf, tp);
 %% FITTING SEIR MODEL
 % [S, E, I, R]
 
@@ -103,13 +97,11 @@ gamma0 = p_SIR(2);
 p0_SEIR = [beta0, alpha0, gamma0];
 
 p_SEIR = fit_SEIR(X_ad_SEIR, X0_ad_SEIR, p0_SEIR, t0, tf);
-
 %% PLOT SEIR
-plot_SEIR(X_SEIR, X0_ad_SEIR, N, p_SEIR, t0, tf, tp);
+plot_SEIR(X_SEIR, X0_ad_SEIR, N, p_SEIR, dates, t0, tf, tp);
 % RMSE train E: 24373.394744 
 % RMSE train I: 243733.947545 
 % RMSE train R: 265378.113719 
-
 %% FITTING SEIIR MODEL
 
 S = N-E-I-R;
@@ -140,12 +132,9 @@ lambda_e0 = 0.251883;
 p0_SEIIR = [f0, alpha0, gamma0, lambda_a0, lambda_s0, lambda_e0 ];
 
 p_SEIIR = fit_SEIIR(X_ad_SEIIR, X0_ad_SEIIR, p0_SEIIR, t0, tf);
-
-p_SEIIR
-
+%p_SEIIR
 %% PLOT SEIIR
 plot_SEIIR(X_SEIIR, X0_ad_SEIIR, N, p_SEIIR, t0, tf, tp);
-
 %% FITTING SEIIRHD MODEL
 
 S = N-E-I-R;
