@@ -2,15 +2,15 @@ function dx = SEIR(t,x,p)
 % Input 
 % t:        time vector
 % x:        variables vector
-% p:        vector containing beta, alpha and gamma
-% beta:   λ0/S(0)>0 is the infection rate 
+% p:        vector containing the parameters
+% beta:     λ0/S(0)>0 is the infection rate 
 %           rescaled by the initial number of 
 %           susceptible individuals S(0)
 % alpha:    the inverse of the incubation period
 % gamma:    recovery/death rate
 
 % Output
-% dx: 
+% dx:       [S', E', I', R']
 
 % SEIR model 
 % S'= -beta*S*I

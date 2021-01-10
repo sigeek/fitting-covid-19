@@ -46,8 +46,8 @@ for i = 1:size(tp, 2)
     
     x0=100;
     y0=100;
-    width=1200;
-    height=600;
+    width=1300;
+    height=700;
     set(gcf,'position',[x0,y0,width,height]);
 
     figure(1)

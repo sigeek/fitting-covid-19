@@ -57,9 +57,9 @@ X0_ad_SIR = [S0 I0 R0]/N;
 beta0 = beta0*N;
 p0_SIR = [beta0, gamma0];
 
-p_SIR = fit_SIR(X_ad_SIR, X0_ad_SIR, p0_SIR,t0,tf);
-%p_SIR
-%R_index = p_SIR(1)/ p_SIR(2)
+p_SIR = fit_SIR(X_ad_SIR, X0_ad_SIR, p0_SIR, t0, tf);
+fprintf("--- SIR FITTING DONE --- \n");
+fprintf("beta: %f, gamma: %f \n", p_SIR(1), p_SIR(2));
 %% PLOT SIR
 tp = [7,14, 21];
 plot_SIR(X_SIR, X0_ad_SIR, N, p_SIR, dates, t0, tf, tp);
@@ -88,8 +88,8 @@ S0 = N-E0-I0-R0;
 X0_ad_SEIR = [S0 E0 I0 R0]/N;
 
 S0 = N;
-t_incubation = 5.1; %paper SEIR
-alpha0=1/t_incubation;
+tau = 5.1; %paper SEIR
+alpha0=1/tau;
 
 % initial beta and gamma are taken from the previous simulation results 
 beta0 = p_SIR(1);
@@ -97,7 +97,10 @@ gamma0 = p_SIR(2);
 p0_SEIR = [beta0, alpha0, gamma0];
 
 p_SEIR = fit_SEIR(X_ad_SEIR, X0_ad_SEIR, p0_SEIR, t0, tf);
+fprintf("--- SEIR FITTING DONE --- \n");
+fprintf("beta: %f, alpha: %f, gamma: %f \n", p_SEIR(1), p_SEIR(2), p_SEIR(3));
 %% PLOT SEIR
+tp = [7,14, 21];
 plot_SEIR(X_SEIR, X0_ad_SEIR, N, p_SEIR, dates, t0, tf, tp);
 % RMSE train E: 24373.394744 
 % RMSE train I: 243733.947545 
@@ -105,7 +108,6 @@ plot_SEIR(X_SEIR, X0_ad_SEIR, N, p_SEIR, dates, t0, tf, tp);
 %% FITTING SEIIR MODEL
 
 S = N-E-I-R;
-
 %f presa dal paper
 f0 = 0.4264;
 
@@ -124,17 +126,18 @@ X0_ad_SEIIR = [S0 E0 I_a0 I_s0 R0]/N;
 alpha0 = p_SEIR(2);
 gamma0 = p_SEIR(3);
 
-lambda_a0 = 0.05;
-lambda_s0 = 0.675281;
-lambda_e0 = 0.251883;
+beta_a0 = 0.05;
+beta_s0 = 0.675281;
+beta_e0 = 0.251883;
 
-%p0_SEIIR = [f0, alpha0, gamma0, lambda_a0, lambda_s0 ];
-p0_SEIIR = [f0, alpha0, gamma0, lambda_a0, lambda_s0, lambda_e0 ];
-
+p0_SEIIR = [f0, alpha0, gamma0, beta_a0, beta_s0, beta_e0 ];
 p_SEIIR = fit_SEIIR(X_ad_SEIIR, X0_ad_SEIIR, p0_SEIIR, t0, tf);
-%p_SEIIR
+fprintf("--- SEIIR FITTING DONE --- \n");
+fprintf("f0: %f, alpha: %f, gamma: %f, beta_a: %f, beta_s: %f, beta_e: %f \n"...
+    , p_SEIIR(1), p_SEIIR(2), p_SEIIR(3), p_SEIIR(4), p_SEIIR(5), p_SEIIR(6));
 %% PLOT SEIIR
-plot_SEIIR(X_SEIIR, X0_ad_SEIIR, N, p_SEIIR, t0, tf, tp);
+tp = [7,14, 21];
+plot_SEIIR(X_SEIIR, X0_ad_SEIIR, N, p_SEIIR, dates, t0, tf, tp);
 %% FITTING SEIIRHD MODEL
 
 S = N-E-I-R;
@@ -157,20 +160,24 @@ X0_ad_SEIIRHD = [S0 E0 I_a0 I_s0 H0 R0 D0]/N;
 f0 = p_SEIIR(1);
 alpha0 = p_SEIIR(2);
 gamma0 = p_SEIIR(3);
-lambda_a0 = p_SEIIR(4);
-lambda_s0 = p_SEIIR(5);
-lambda_e0 = p_SEIIR(6);
+beta_a0 = p_SEIIR(4);
+beta_s0 = p_SEIIR(5);
+beta_e0 = p_SEIIR(6);
 
 %report settimanali ISS tasso ricovero
 nu_e0 = 0.008;
 nu_s0 = 0.08;
 mu0 = 0.0204;
 
-p0_SEIIRHD = [f0, alpha0, gamma0, lambda_a0, lambda_s0, lambda_e0, nu_e0, nu_s0, mu0];
+p0_SEIIRHD = [f0, alpha0, gamma0, beta_a0, beta_s0, beta_e0, nu_e0, nu_s0, mu0];
 
 p_SEIIRHD = fit_SEIIRHD(X_ad_SEIIRHD, X0_ad_SEIIRHD, p0_SEIIRHD, t0, tf);
-
-p_SEIIRHD
+fprintf("--- SEIIRHD FITTING DONE --- \n");
+fprintf("f0: %f, alpha: %f, gamma: %f, \n beta_a: %f, beta_s: %f, beta_e: %f, \n nu_e0: %f, nu_s0: %f, mu0: %f \n"...
+        , p_SEIIRHD(1), p_SEIIRHD(2), p_SEIIRHD(3), ...
+        p_SEIIRHD(4), p_SEIIRHD(5), p_SEIIRHD(6),...
+        p_SEIIRHD(7), p_SEIIRHD(8), p_SEIIRHD(9));
 
 %% PLOT SEIIRHD
-plot_SEIIRHD(X_SEIIRHD, X0_ad_SEIIRHD, N, p_SEIIRHD, t0, tf, tp);
+tp = [7,14, 21];
+plot_SEIIRHD(X_SEIIRHD, X0_ad_SEIIRHD, N, p_SEIIRHD, dates, t0, tf, tp);

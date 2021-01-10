@@ -1,27 +1,21 @@
 function dx = SEIIR(t,x,p)
 % Input 
-% t:        time vector
-% x:        variables vector
-% p:        vector containing lambda, alpha and gamma
-% lambda:   λ0/S(0)>0 is the infection rate 
-%           rescaled by the initial number of 
-%           susceptible individuals S(0)
-% alpha:    the inverse of the incubation period
-% gamma:    recovery/death rate (tasso di morte)
+% t:                time vector
+% x:                variables vector
+% p:                vector containing the parameters
+% f:                probability of being symptomatic
+% alpha:            the inverse of the incubation period
+% gamma:            recovery rate
+% beta_{e,a,s}:     infection rate from S to E, I_a, I_s
+% nu_{e,s}:         intervention rate for E and I_s
+% mu:               death rate
 
 % Output
-% dx: 
+% dx:               [S', E', Ia', Is', R']
 
-% SEIIR model (1)
-% S'= -(lambda_s*I_s + lambda_a*I_a) * S
-% E' = ( + lambda_s*I_s + lambda_a*I_a)*S - alpha*E
-% I_s'  = f*alpha*E - (gamma)*I_s
-% I_a' = (1-f)*alpha*E - (gamma*I_a)
-% R'= gamma*(I_s+I_a)
-
-% SEIIR model (2)
-% S'= -(lambda_s*I_s +lambda_e*E+ lambda_a*I_a) * S
-% E' = ( + lambda_s*I_s + lambda_e*E + lambda_a*I_a)*S - alpha*E
+% SEIIR model
+% S'= -(beta_s*I_s +beta_e*E+ beta_a*I_a) * S
+% E' = (beta_s*I_s + beta_e*E + beta_a*I_a)*S - alpha*E
 % I_s'  = f*alpha*E - (gamma)*I_s
 % I_a' = (1-f)*alpha*E - (gamma*I_a)
 % R'= gamma*(I_s+I_a)
