@@ -1,2 +1,3 @@
 # COVID-19 epidemic in Italy: epidemiological models and Deep Learning compared
+[`Tableau Views`](https://public.tableau.com/profile/silvia5108#!/vizhome/Covid19Italia_16146765468140/Casi) \
 ... work in  progress ...
