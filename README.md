@@ -1,2 +1,5 @@
-# COVID-19 trends in Italy: epidemic models vs Deep Learning
-This is the final project for the course "Modelli Matematici per la Biomedicina" at Politecnico di Torino, academic year 2020/2021.
+# COVID-19 epidemic in Italy: epidemiological models and Deep Learning compared
+
+[`Presentaion`](https://nbviewer.jupyter.org/github/sigeek/fitting-covid-19/blob/main/presentation.ipynb) - 
+[`Tableau Views`](https://public.tableau.com/profile/silvia5108#!/vizhome/Covid19Italia_16146765468140/Casi) \
+... work in  progress ...
