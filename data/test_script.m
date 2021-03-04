@@ -1,0 +1,13 @@
+% Test script to check the correctness of the import
+url = urlread('https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-andamento-nazionale/dpc-covid19-ita-andamento-nazionale.csv');
+C = textscan(url,'%s %s %d %d %d %d %d %d %d %d %d %d %d %d %d %d %s %d %s %s','delimiter',',','HeaderLines',1,'EndOfLine','\n');
+S = cell2struct(C,{'data','stato','ricoverati_con_sintomi','terapia_intensiva',...
+    'totale_ospedalizzati','isolamento_domiciliare','totale_positivi',...
+    'variazione_totale_positivi','nuovi_positivi','dimessi_guariti',...
+    'deceduti','casi_da_sospetto_diagnostico','casi_da_screening','totale_casi',...
+    'tamponi','casi_testati','note','ingressi_terapia_intensiva','note_test','note_casi'},2);
+
+S = rmfield(S, 'stato');
+S = rmfield(S, 'note');
+S = rmfield(S, 'note_test');
+S = rmfield(S, 'note_casi');

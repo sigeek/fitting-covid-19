@@ -9,6 +9,7 @@ addpath('./models/');
 addpath('./results/');
 addpath('./models/SIR');
 addpath('./models/SEIR');
+
 addpath('./models/SEIIR');
 addpath('./models/SEIIRHD');
 
@@ -19,17 +20,17 @@ size_data = sizes(2);
 N = 60.*10^6;
 
 %% PLOT OVERVIEW DATA
+% da rifare prima della consegna
 plot_data(data, dates, N, 1, size_data, "complete");
 
 %% PLOT OCTOBER DATA
-t0 = find(dates=="08-Oct-2020"); % 10-08
-tf = find(dates=="05-Nov-2020"); % 11-05
+t0 = find(dates=="08-Oct-2020"); 
+tf = find(dates=="05-Nov-2020"); 
 plot_data(data, dates(t0:tf), N, t0, tf, "october");
 %% FITTING SIR MODEL
 % [S, I, R]
 
-S0 = N;
-beta0 = 0.962/S0; 
+beta0 = 0.962/N;  
 gamma0 = 0.37; 
 
 % adimensional SEIR model for fitting
@@ -40,15 +41,15 @@ gamma0 = 0.37;
 % i' = (beta*N)*(S/N)*(I/N) - (gamma)*(I/N) = (beta*N)*s*i - gamma*i
 % r' = gamma*(I/N) = gamma*i
 
-I = cast((data.totale_positivi), 'double');
+I = cast((data.totale_positivi), 'double'); 
 R = cast((data.dimessi_guariti), 'double');
 S = N-I-R;
 X_SIR = [S, I, R];
 X_ad_SIR = [S, I, R]/N;
 
 % initial conditions
-t0 = find(dates=="08-Oct-2020"); % 10-08
-tf = find(dates=="05-Nov-2020"); % 11-05
+t0 = find(dates=="08-Oct-2020"); 
+tf = find(dates=="05-Nov-2020"); 
 I0 = I(t0);
 R0 = R(t0);
 S0 = N-I0-R0;
