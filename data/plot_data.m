@@ -42,6 +42,10 @@ set(gca,'XLim',[dates(1), dates(len)])
 
 if plot_type=="complete"
     saveas(gcf,'./results/overview_plot.png')
+elseif plot_type=="Molise"
+    saveas(gcf,'./results/Molise_plot.png')
+elseif plot_type=="Sardegna"
+    saveas(gcf,'./results/Molise_plot.png')   
 else
     saveas(gcf,'./results/october_plot.png')
 end

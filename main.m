@@ -9,12 +9,13 @@ addpath('./models/');
 addpath('./results/');
 addpath('./models/SIR');
 addpath('./models/SEIR');
-
 addpath('./models/SEIIR');
 addpath('./models/SEIIRHD');
 
-%retrieve the data struct
+%retrieve the data structs
 [data, dates] = getData;
+[dataMolise, datesMolise] = getDataByRegion("Molise");
+[dataSardegna, datesSardegna] = getDataByRegion("Sardegna");
 sizes = size(dates);
 size_data = sizes(2);
 N = 60.*10^6;

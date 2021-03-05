@@ -3,7 +3,7 @@ function dx = SIR(t,x,p)
 % t:        time vector
 % x:        variables vector
 % p:        vector containing the parameters
-% lambda:    λ0/S(0)>0 is the infection rate 
+% beta:     beta0/S(0)>0 is the infection rate 
 %           rescaled by the initial number of 
 %           susceptible individuals S(0)
 % gamma:    recovery/death rate
