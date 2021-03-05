@@ -14,7 +14,7 @@ end
 
 % definition of the data types for every column in the CSV file
 C = textscan(url,'%s %s %d %s %f %f %d %d %d %d %d %d %d %d %d %d %d %d %d %d %s %d %s %s %d %d %d %d %s %s',...
-    'delimiter',';','HeaderLines',1,'EndOfLine','\n');
+    'delimiter',',','HeaderLines',1,'EndOfLine','\n');
 % definition of the data structure
 data_struct = cell2struct(C,{'data','stato', 'codice_regione','denominazione_regione', ...
     'lat', 'long', 'ricoverati_con_sintomi','terapia_intensiva',...
@@ -42,15 +42,6 @@ for i = 1:size(data_struct.data)
     date = datetime(date,'InputFormat','yyyy-MM-dd');
     dates(i) = date;
 end
-
-% define vectors with daily variation 
-% nuovi_isolamento_domicialiare
-% nuovi_dimessi_guariti
-% nuovi_deceduti
-data_struct.nuovi_isolamento_domiciliare(1) = data_struct.isolamento_domiciliare(1);
-data_struct.nuovi_dimessi_guariti(1) = data_struct.dimessi_guariti(1);
-data_struct.nuovi_deceduti(1) = data_struct.deceduti(1);
-data_struct.nuovi_ospedalizzati(1) = data_struct.totale_ospedalizzati(1);
 
 
 data_struct.nuovi_positivi = data_struct.nuovi_positivi';

@@ -23,11 +23,16 @@ N = 60.*10^6;
 %% PLOT OVERVIEW DATA
 % da rifare prima della consegna
 plot_data(data, dates, N, 1, size_data, "complete");
-
 %% PLOT OCTOBER DATA
 t0 = find(dates=="08-Oct-2020"); 
 tf = find(dates=="05-Nov-2020"); 
 plot_data(data, dates(t0:tf), N, t0, tf, "october");
+%% PLOT FEBRUARY DATA FOR MOLISE
+t0 = find(dates=="10-Feb-2021"); 
+tf = find(dates=="04-Mar-2021"); 
+plot_data(dataMolise, datesMolise(t0:tf), N, t0, tf, "Molise");
+%% PLOT FEBRUARY DATA FOR SARDEGNA
+plot_data(dataSardegna, datesSardegna(t0:tf), N, t0, tf, "Sardegna");
 %% FITTING SIR MODEL
 % [S, I, R]
 
