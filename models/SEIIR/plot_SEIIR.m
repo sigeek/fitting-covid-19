@@ -1,4 +1,4 @@
-function plot_SEIIR(X, X0, N, p, dates, t0, tf, tp)
+function plot_SEIIR(X, X0, N, p, dates, t0, tf, tp, name)
 
 % Input 
 % X       data: S, E, Ia, Is, R
@@ -84,4 +84,10 @@ for i = 1:size(tp, 2)
 
 end
 
-saveas(gcf,'./results/SEIIR_fitting.png')
+if name == "Molise"
+    saveas(gcf,'./results/SEIIR_Molise_fitting.png')
+elseif name == "Sardegna"
+    saveas(gcf,'./results/SEIIR_Sardegna_fitting.png')
+else
+    saveas(gcf,'./results/SEIIR_fitting.png')
+end

@@ -19,7 +19,8 @@ addpath('./models/SEIIRHD');
 sizes = size(dates);
 size_data = sizes(2);
 N = 60.*10^6;
-
+Nm = 300516;
+Ns = 1611621;
 %% PLOT OVERVIEW DATA
 % da rifare prima della consegna
 plot_data(data, dates, N, 1, size_data, "complete");
@@ -39,7 +40,7 @@ plot_data(dataSardegna, datesSardegna(t0:tf), N, t0, tf, "Sardegna");
 beta0 = 0.962/N;  
 gamma0 = 0.37; 
 
-% adimensional SEIR model for fitting
+% adimensional SIR model for fitting
 % We divide every variable by N
 % s = S/N, e= E/N etc.
 % [s, i, r]
@@ -69,7 +70,34 @@ fprintf("--- SIR FITTING DONE --- \n");
 fprintf("beta: %f, gamma: %f \n", p_SIR(1), p_SIR(2));
 %% PLOT SIR
 tp = [7,14, 21];
-plot_SIR(X_SIR, X0_ad_SIR, N, p_SIR, dates, t0, tf, tp);
+plot_SIR(X_SIR, X0_ad_SIR, N, p_SIR, dates, t0, tf, tp,"d");
+%% FITTING SIR MODEL x MOLISE
+beta0m = 0.962/Nm;  
+gamma0m = 0.37; 
+
+Im = cast((dataMolise.totale_positivi), 'double'); 
+Rm = cast((dataMolise.dimessi_guariti), 'double');
+Sm = Nm-Im-Rm;
+Xm_SIR = [Sm, Im, Rm];
+Xm_ad_SIR = [Sm, Im, Rm]/Nm;
+
+% initial conditions
+tm0 = find(dates=="10-Jan-2021"); %01
+tmf = find(dates=="11-Feb-2021"); 
+Im0 = Im(tm0);
+Rm0 = Rm(tm0);
+Sm0 = Nm-Im0-Rm0;
+Xm0_ad_SIR = [Sm0 Im0 Rm0]/Nm;
+
+beta0m = beta0m*Nm;
+pm0_SIR = [beta0m, gamma0m];
+
+pm_SIR = fit_SIR(Xm_ad_SIR, Xm0_ad_SIR, pm0_SIR, tm0, tmf);
+fprintf("--- SIR x MOLISE FITTING DONE --- \n");
+fprintf("beta: %f, gamma: %f \n", pm_SIR(1), pm_SIR(2));
+%% PLOT SIR x MOLISE
+tp = [7, 14, 21];
+plot_SIR(Xm_SIR, Xm0_ad_SIR, Nm, pm_SIR, datesMolise, tm0, tmf, tp, "Molise");
 %% FITTING SEIR MODEL
 % [S, E, I, R]
 
@@ -108,10 +136,37 @@ fprintf("--- SEIR FITTING DONE --- \n");
 fprintf("beta: %f, alpha: %f, gamma: %f \n", p_SEIR(1), p_SEIR(2), p_SEIR(3));
 %% PLOT SEIR
 tp = [7,14, 21];
-plot_SEIR(X_SEIR, X0_ad_SEIR, N, p_SEIR, dates, t0, tf, tp);
-% RMSE train E: 24373.394744 
-% RMSE train I: 243733.947545 
-% RMSE train R: 265378.113719 
+plot_SEIR(X_SEIR, X0_ad_SEIR, N, p_SEIR, dates, t0, tf, tp,"d");
+%% FITTING SEIR MODEL x MOLISE
+% [S, E, I, R]
+
+Em = 0.1*(Im); 
+Sm = Nm-Im-Em-Rm;
+Xm = [Sm, Em, Im, Rm];
+Xm_SEIR = [Sm, Em, Im, Rm];
+Xm_ad_SEIR = [Sm, Em, Im, Rm]/Nm;
+
+Em0 = Em(tm0);
+Im0 = Im(tm0);
+Rm0 = Rm(tm0);
+Sm0 = Nm-Em0-Im0-Rm0;
+Xm0_ad_SEIR = [Sm0 Em0 Im0 Rm0]/Nm;
+
+Sm0 = Nm;
+tau = 3; %paper SEIR
+alpham0=1/tau;
+
+% initial beta and gamma are taken from the previous simulation results 
+betam0 = p_SIR(1);
+gammam0 = p_SIR(2);
+pm0_SEIR = [betam0, alpham0, gammam0];
+
+pm_SEIR = fit_SEIR(Xm_ad_SEIR, Xm0_ad_SEIR, pm0_SEIR, tm0, tmf);
+fprintf("--- SEIR x MOLISE FITTING DONE --- \n");
+fprintf("beta: %f, alpha: %f, gamma: %f \n", pm_SEIR(1), pm_SEIR(2), pm_SEIR(3));
+%% PLOT SEIR x MOLISE
+tp = [7, 14, 21];
+plot_SEIR(Xm_SEIR, Xm0_ad_SEIR, Nm, pm_SEIR, dates, tm0, tmf, tp,"Molise");
 %% FITTING SEIIR MODEL
 
 S = N-E-I-R;
@@ -144,7 +199,7 @@ fprintf("f0: %f, alpha: %f, gamma: %f, beta_a: %f, beta_s: %f, beta_e: %f \n"...
     , p_SEIIR(1), p_SEIIR(2), p_SEIIR(3), p_SEIIR(4), p_SEIIR(5), p_SEIIR(6));
 %% PLOT SEIIR
 tp = [7,14, 21];
-plot_SEIIR(X_SEIIR, X0_ad_SEIIR, N, p_SEIIR, dates, t0, tf, tp);
+plot_SEIIR(X_SEIIR, X0_ad_SEIIR, N, p_SEIIR, dates, t0, tf, tp, "d");
 %% FITTING SEIIRHD MODEL
 
 S = N-E-I-R;
@@ -187,4 +242,4 @@ fprintf("f0: %f, alpha: %f, gamma: %f, \n beta_a: %f, beta_s: %f, beta_e: %f, \n
 
 %% PLOT SEIIRHD
 tp = [7,14, 21];
-plot_SEIIRHD(X_SEIIRHD, X0_ad_SEIIRHD, N, p_SEIIRHD, dates, t0, tf, tp);
+plot_SEIIRHD(X_SEIIRHD, X0_ad_SEIIRHD, N, p_SEIIRHD, dates, t0, tf, tp, "d");

@@ -29,9 +29,6 @@ data_struct = cell2struct(C,{'data','stato', 'codice_regione','denominazione_reg
 
 % removing additional columns we will not use in our analysis
 data_struct = rmfield(data_struct, 'stato');
-data_struct = rmfield(data_struct, 'note');
-data_struct = rmfield(data_struct, 'note_test');
-data_struct = rmfield(data_struct, 'note_casi');
 
 % date format
 % from YYYY-MM-DDThh-mm to YYYY-MM-DD

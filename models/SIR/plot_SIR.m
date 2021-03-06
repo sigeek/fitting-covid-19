@@ -1,4 +1,4 @@
-function plot_SIR(X, X0, N, p, dates, t0, tf, tp)
+function plot_SIR(X, X0, N, p, dates, t0, tf, tp, name)
 
 % Input 
 % X       data: S, I, R
@@ -59,5 +59,10 @@ for i = 1:size(tp, 2)
     
 
 end
-
-saveas(gcf,'./results/SIR_fitting.png')
+if name == "Molise"
+    saveas(gcf,'./results/SIR_Molise_fitting.png')
+elseif name == "Sardegna"
+    saveas(gcf,'./results/SIR_Sardegna_fitting.png')
+else
+    saveas(gcf,'./results/SIR_fitting.png')
+end
