@@ -1,4 +1,4 @@
-function plot_SEIIR(X, X0, N, p, dates, t0, tf, tp, name)
+function plot_SEIIR(X, X0, N, p, dates, t0, tf, tp, path)
 
 % Input 
 % X       data: S, E, Ia, Is, R
@@ -29,24 +29,6 @@ for i = 1:size(tp, 2)
     R_pred = X(:, 5);
     len_train = tf-t0;
     
-    %RMSE_E_train = sqrt(mean((E(t0:tf)-E_pred(1:len_train+1)).^2));
-    %RMSE_Ia_train = sqrt(mean((I_a(t0:tf)-Ia_pred(1:len_train+1)).^2));
-    %RMSE_Is_train = sqrt(mean((I_s(t0:tf)-Is_pred(1:len_train+1)).^2));
-    %RMSE_R_train = sqrt(mean((R(t0:tf)-R_pred(1:len_train+1)).^2));
-    %RMSE_E_test = sqrt(mean((E(tf:tf+tp(i))-E_pred(len_train:len_train+tp(i))).^2));
-    %RMSE_Ia_test = sqrt(mean((I_a(tf:tf+tp(i))-Ia_pred(len_train:len_train+tp(i))).^2));
-    %RMSE_Is_test = sqrt(mean((I_s(tf:tf+tp(i))-Is_pred(len_train:len_train+tp(i))).^2));
-    %RMSE_R_test = sqrt(mean((R(tf:tf+tp(i))-R_pred(len_train:len_train+tp(i))).^2));
-    %fprintf("%d days forecasts errors \n", tp(i));
-    %fprintf("RMSE train E: %f \n", RMSE_E_train);
-    %fprintf("RMSE train I: %f \n", RMSE_Ia_train);
-    %fprintf("RMSE train R: %f \n", RMSE_Is_train);
-    %fprintf("RMSE train R: %f \n", RMSE_R_train);
-    %fprintf("RMSE test E: %f \n", RMSE_E_test);
-    %fprintf("RMSE test I: %f \n", RMSE_Ia_test);
-    %fprintf("RMSE test R: %f \n", RMSE_Is_test);
-    %fprintf("RMSE test R: %f \n", RMSE_R_test);
-
     x0=100;
     y0=100;
     width=1300;
@@ -57,17 +39,19 @@ for i = 1:size(tp, 2)
     figure(1)
     subplot(2,3,i);
     xline(dates(tf),'--m');hold on;
-    plot(dates(t0:tf+tp(i)), I_a(t0:tf+tp(i)),'ro');hold on; 
-    plot(dates(t),N*Ia_pred,'r', 'LineWidth',2);
-    plot(dates(t0:tf+tp(i)), I_s(t0:tf+tp(i)), 'o', 'Color', '#D95319');hold on;
-    plot(dates(t), N*Is_pred, 'Color', '#D95319', 'LineWidth',2);
-    plot(dates(t0:tf+tp(i)), R(t0:tf+tp(i)),'go');hold on;
-    plot(dates(t), N*R_pred,'g', 'LineWidth',2);
+    semilogy(dates(t0:tf+tp(i)), I_a(t0:tf+tp(i)),'ro');hold on; 
+    semilogy(dates(t),N*Ia_pred,'r', 'LineWidth',2);
+    semilogy(dates(t0:tf+tp(i)), I_s(t0:tf+tp(i)), 'o', 'Color', '#D95319');hold on;
+    semilogy(dates(t), N*Is_pred, 'Color', '#D95319', 'LineWidth',2);
+    semilogy(dates(t0:tf+tp(i)), R(t0:tf+tp(i)),'go');hold on;
+    semilogy(dates(t), N*R_pred,'g', 'LineWidth',2);
     xlabel('Days');ylabel('Number of individuals');
     legend('Start forecast',...
     'I_a (reported)','I_a (fitted)', 'I_s (reported)', 'I_s (fitted)',...
     'R (reported)','R (fitted)','Location', 'northwest');
     title(sprintf('SEIIR: %d days forecasts', tp(i)));
+    grid on
+    set(gca,'yscale','log');
     set(gca,'XLim',[dates(t0), dates(tf+tp(i))]);
     
     subplot(2,3,3+i);
@@ -79,15 +63,12 @@ for i = 1:size(tp, 2)
     legend('Start forecast', 'E (reported)','E (fitted)',...
     'Location', 'northwest');
     title(sprintf('SEIIR: %d days forecasts', tp(i)));
+    grid on
+    set(gca,'yscale','log');
     set(gca,'XLim',[dates(t0), dates(tf+tp(i))]);
     
 
 end
 
-if name == "Molise"
-    saveas(gcf,'./results/SEIIR_Molise_fitting.png')
-elseif name == "Sardegna"
-    saveas(gcf,'./results/SEIIR_Sardegna_fitting.png')
-else
-    saveas(gcf,'./results/SEIIR_fitting.png')
+saveas(gcf,path)
 end

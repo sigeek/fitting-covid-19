@@ -1,4 +1,4 @@
-function plot_SEIIRHD(X, X0, N, p, dates, t0, tf, tp, name)
+function plot_SEIIRHD(X, X0, N, p, dates, t0, tf, tp, path)
 
 % Input 
 % X       data: S, I, R
@@ -32,35 +32,6 @@ for i = 1:size(tp, 2)
     R_pred = X(:, 6);
     D_pred = X(:, 7);
     len_train = tf-t0;
-    
-    %RMSE_E_train = sqrt(mean((E(t0:tf)-E_pred(1:len_train+1)).^2));
-    %RMSE_Ia_train = sqrt(mean((I_a(t0:tf)-Ia_pred(1:len_train+1)).^2));
-    %RMSE_Is_train = sqrt(mean((I_s(t0:tf)-Is_pred(1:len_train+1)).^2));
-    %RMSE_H_train = sqrt(mean((H(t0:tf)-H_pred(1:len_train+1)).^2));
-    %RMSE_R_train = sqrt(mean((R(t0:tf)-R_pred(1:len_train+1)).^2));
-    %RMSE_D_train = sqrt(mean((D(t0:tf)-D_pred(1:len_train+1)).^2));
-    
-    %RMSE_E_test = sqrt(mean((E(tf:tf+tp(i))-E_pred(len_train:len_train+tp(i))).^2));
-    %RMSE_Ia_test = sqrt(mean((I_a(tf:tf+tp(i))-Ia_pred(len_train:len_train+tp(i))).^2));
-    %RMSE_Is_test = sqrt(mean((I_s(tf:tf+tp(i))-Is_pred(len_train:len_train+tp(i))).^2));
-    %RMSE_H_test = sqrt(mean((H(tf:tf+tp(i))-H_pred(len_train:len_train+tp(i))).^2));
-    %RMSE_R_test = sqrt(mean((R(tf:tf+tp(i))-R_pred(len_train:len_train+tp(i))).^2));
-    %RMSE_D_test = sqrt(mean((D(tf:tf+tp(i))-D_pred(len_train:len_train+tp(i))).^2));
-    
-    %fprintf("%d days forecasts errors \n", tp(i));
-    %fprintf("RMSE train E: %f \n", RMSE_E_train);
-    %fprintf("RMSE train Ia: %f \n", RMSE_Ia_train);
-    %fprintf("RMSE train Is: %f \n", RMSE_Is_train);
-    %fprintf("RMSE train H: %f \n", RMSE_H_train);
-    %fprintf("RMSE train R: %f \n", RMSE_R_train);
-    %fprintf("RMSE train D: %f \n", RMSE_D_train);
-    
-    %fprintf("RMSE test E: %f \n", RMSE_E_test);
-    %fprintf("RMSE test Ia: %f \n", RMSE_Ia_test);
-    %fprintf("RMSE test Is: %f \n", RMSE_Is_test);
-    %fprintf("RMSE test H: %f \n", RMSE_H_test);
-    %fprintf("RMSE test R: %f \n", RMSE_R_test);
-    %fprintf("RMSE test D: %f \n", RMSE_D_test);
 
     x0=100;
     y0=100;
@@ -83,7 +54,9 @@ for i = 1:size(tp, 2)
     'R (reported)','R (fitted)',...
     'Location', 'northwest');
     title(sprintf('SEIIRHD: %d days forecasts', tp(i)));
+    set(gca,'yscale','log');
     set(gca,'XLim',[dates(t0), dates(tf+tp(i))]);
+    grid on
     
     subplot(2,3,3+i);
     xline(dates(tf),'--m');hold on;
@@ -98,14 +71,11 @@ for i = 1:size(tp, 2)
     'H (reported)','H (fitted)',...
     'D (reported)','D (fitted)','Location', 'northwest');
     title(sprintf('SEIIRHD: %d days forecasts', tp(i)));
+    set(gca,'yscale','log');
     set(gca,'XLim',[dates(t0), dates(tf+tp(i))]);
+    grid on
     
     
 end
-if name == "Molise"
-    saveas(gcf,'./results/SEIIRHD_Molise_fitting.png')
-elseif name == "Sardegna"
-    saveas(gcf,'./results/SEIIRHD_Sardegna_fitting.png')
-else
-    saveas(gcf,'./results/SEIIRHD_fitting.png')
+saveas(gcf,path)
 end

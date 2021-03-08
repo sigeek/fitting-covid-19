@@ -1,4 +1,4 @@
-function [] = plot_data(data, dates, N, t0, tf, plot_type)
+function [] = plot_data(data, dates, N, t0, tf, path)
 
 x0=100;
 y0=100;
@@ -40,14 +40,8 @@ plot(dates, D(t0:tf),'k', 'LineWidth',2);
 xlabel('time');ylabel('Number of individuals');title('Deaths')
 set(gca,'XLim',[dates(1), dates(len)])
 
-if plot_type=="complete"
-    saveas(gcf,'./results/overview_plot.png')
-elseif plot_type=="Molise"
-    saveas(gcf,'./results/molise_plot.png')
-elseif plot_type=="Sardegna"
-    saveas(gcf,'./results/sardegna_plot.png')   
-else
-    saveas(gcf,'./results/october_plot.png')
-end
+% path = './results/october_plot.png'
+saveas(gcf, path)
+
 end
 

@@ -1,4 +1,4 @@
-function plot_SIR(X, X0, N, p, dates, t0, tf, tp, name)
+function plot_SIR(X, X0, N, p, dates, t0, tf, tp, path)
 
 % Input 
 % X       data: S, I, R
@@ -24,20 +24,6 @@ for i = 1:size(tp, 2)
     R_pred = X(:, 3);
     len_train = tf-t0;
     
-    %RMSE_I_train = sqrt(mean((I(t0:tf)-N*I_pred(1:len_train+1)).^2));
-    %RMSE_R_train = sqrt(mean((R(t0:tf)-N*R_pred(1:len_train+1)).^2));
-    %RMSE_I_test = sqrt(mean((I(tf:tf+tp(i))-N*I_pred(len_train:len_train+tp(i))).^2));
-    %RMSE_R_test = sqrt(mean((R(tf:tf+tp(i))-N*R_pred(len_train:len_train+tp(i))).^2));
-    
-    %if i == 1
-        %fprintf("--- SIR MODEL --- \n");
-        %fprintf("RMSE train I: %f \n", RMSE_I_train);
-        %fprintf("RMSE train R: %f \n", RMSE_R_train);
-    %end
-    %fprintf("%d days forecasts errors \n", tp(i));
-    %fprintf("RMSE test I: %f \n", RMSE_I_test);
-    %fprintf("RMSE test R: %f \n", RMSE_R_test);
-    
     x0=100;
     y0=100;
     width=1300;
@@ -55,14 +41,12 @@ for i = 1:size(tp, 2)
     legend('Start forecast', 'I (reported)','I (fitted)', ...
         'R (reported)', 'R (fitted)', 'Location', 'northwest');
     title(sprintf('SIR: %d days forecasts', tp(i)));
+    grid on
+    set(gca,'yscale','log');
     set(gca,'XLim',[dates(t0), dates(tf+tp(i))]);
     
 
 end
-if name == "Molise"
-    saveas(gcf,'./results/SIR_Molise_fitting.png')
-elseif name == "Sardegna"
-    saveas(gcf,'./results/SIR_Sardegna_fitting.png')
-else
-    saveas(gcf,'./results/SIR_fitting.png')
+% path = './results/SIR_fitting.png'
+saveas(gcf,path)
 end
