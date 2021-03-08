@@ -251,21 +251,21 @@ alpha0 = p_SEIIR(2);
 gamma0 = p_SEIIR(3);
 beta_a0 = p_SEIIR(4);
 beta_s0 = p_SEIIR(5);
-beta_e0 = p_SEIIR(6);
+%beta_e0 = p_SEIIR(6);
 
 %report settimanali ISS tasso ricovero
-nu_e0 = 0.008;
+%nu_e0 = 0.008;
 nu_s0 = 0.08;
 mu0 = 0.0204;
 
-p0_SEIIRHD = [f0, alpha0, gamma0, beta_a0, beta_s0, beta_e0, nu_e0, nu_s0, mu0];
+p0_SEIIRHD = [f0, alpha0, gamma0, beta_a0, beta_s0, nu_s0, mu0];
 
 p_SEIIRHD = fit_SEIIRHD(X_ad_SEIIRHD, X0_ad_SEIIRHD, p0_SEIIRHD, t0, tf);
 fprintf("--- SEIIRHD FITTING DONE --- \n");
-fprintf("f0: %f, alpha: %f, gamma: %f, \n beta_a: %f, beta_s: %f, beta_e: %f, \n nu_e0: %f, nu_s0: %f, mu0: %f \n"...
+fprintf("f0: %f, alpha: %f, gamma: %f, \n beta_a: %f, beta_s: %f, nu_s0: %f, mu0: %f \n"...
         , p_SEIIRHD(1), p_SEIIRHD(2), p_SEIIRHD(3), ...
         p_SEIIRHD(4), p_SEIIRHD(5), p_SEIIRHD(6),...
-        p_SEIIRHD(7), p_SEIIRHD(8), p_SEIIRHD(9));
+        p_SEIIRHD(7));
 
 %% PLOT SEIIRHD
 tp = [7,14, 21];
