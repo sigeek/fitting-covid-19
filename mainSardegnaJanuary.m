@@ -25,7 +25,7 @@ t0 = find(dates=="21-Jan-2021");
 tf = find(dates=="11-Feb-2021"); 
 plot_data(data, dates(t0:tf), N, t0, tf, "./results/january/Sardegna/januaryPlot.png");
 %% FITTING SIR MODEL 
-beta0 = 0.05/N;  
+beta0 = 0.0652/N;  
 gamma0 = 0.37; 
 
 I = cast((data.totale_positivi), 'double'); 

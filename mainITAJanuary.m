@@ -85,7 +85,7 @@ S0 = N-E0-I0-R0;
 X0_ad_SEIR = [S0 E0 I0 R0]/N;
 
 S0 = N;
-tau = 5.1; %paper SEIR
+tau = 5.2; %paper SEIR
 alpha0=1/tau;
 
 % initial beta and gamma are taken from the previous simulation results 
