@@ -82,7 +82,7 @@ Xm_SIR = [Sm, Im, Rm];
 Xm_ad_SIR = [Sm, Im, Rm]/Nm;
 
 % initial conditions
-tm0 = find(dates=="10-Jan-2021"); %01
+tm0 = find(dates=="21-Jan-2021"); %01
 tmf = find(dates=="11-Feb-2021"); 
 Im0 = Im(tm0);
 Rm0 = Rm(tm0);
@@ -98,6 +98,33 @@ fprintf("beta: %f, gamma: %f \n", pm_SIR(1), pm_SIR(2));
 %% PLOT SIR x MOLISE
 tp = [7, 14, 21];
 plot_SIR(Xm_SIR, Xm0_ad_SIR, Nm, pm_SIR, datesMolise, tm0, tmf, tp, "Molise");
+%% FITTING SIR MODEL x SARDEGNA
+beta0s = 0.05/Ns;  
+gamma0s = 0.4; 
+
+Is = cast((dataSardegna.totale_positivi), 'double'); 
+Rs = cast((dataSardegna.dimessi_guariti), 'double');
+Ss = Ns-Is-Rs;
+Xs_SIR = [Ss, Is, Rs];
+Xs_ad_SIR = [Ss, Is, Rs]/Ns;
+
+% initial conditions
+ts0 = find(dates=="21-Jan-2021"); %01
+tsf = find(dates=="11-Feb-2021"); 
+Is0 = Is(ts0);
+Rs0 = Rs(ts0);
+Ss0 = Ns-Is0-Rs0;
+Xs0_ad_SIR = [Ss0 Is0 Rs0]/Ns;
+
+beta0s = beta0s*Ns;
+ps0_SIR = [beta0s, gamma0s];
+
+ps_SIR = fit_SIR(Xs_ad_SIR, Xs0_ad_SIR, ps0_SIR, ts0, tsf);
+fprintf("--- SIR x SARDEGNA FITTING DONE --- \n");
+fprintf("beta: %f, gamma: %f \n", ps_SIR(1), ps_SIR(2));
+%% PLOT SIR x SARDEGNA
+tp = [7, 14, 21];
+plot_SIR(Xs_SIR, Xs0_ad_SIR, Ns, ps_SIR, datesSardegna, ts0, tsf, tp, "Sardegna");
 %% FITTING SEIR MODEL
 % [S, E, I, R]
 
@@ -243,3 +270,5 @@ fprintf("f0: %f, alpha: %f, gamma: %f, \n beta_a: %f, beta_s: %f, beta_e: %f, \n
 %% PLOT SEIIRHD
 tp = [7,14, 21];
 plot_SEIIRHD(X_SEIIRHD, X0_ad_SEIIRHD, N, p_SEIIRHD, dates, t0, tf, tp, "d");
+%%
+R0 = ((p_SEIIRHD(6)/p_SEIIRHD(7))+((p_SEIIRHD(1)*p_SEIIRHD(5))/(p_SEIIRHD(3)+p_SEIIRHD(9)+p_SEIIRHD(8)))+((1-p_SEIIRHD(1)* p_SEIIRHD(4))/p_SEIIRHD(3)))
