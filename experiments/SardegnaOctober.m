@@ -19,13 +19,13 @@ addpath('./models/SEIIRHD');
 [data, dates] = getDataByRegion("Sardegna");
 sizes = size(dates);
 size_data = sizes(2);
-N = 300516;
-%% PLOT DATA
+N = 1611621;
 t0 = find(dates=="08-Oct-2020"); 
 tf = find(dates=="05-Nov-2020"); 
+%% PLOT DATA
 plot_data(data, dates(t0:tf), N, t0, tf, "./results/october/Sardegna/octoberPlot.png");
 %% FITTING SIR MODEL 
-beta0 = 0.05/N;  
+beta0 = 0.962/N;  
 gamma0 = 0.37; 
 
 I = cast((data.totale_positivi), 'double'); 
@@ -68,6 +68,7 @@ X_ad_SEIR = [S, E, I, R]/N;
 % i' = alpha*(E/N)-gamma*(I/N) = alpha*e-gamma*i
 % r' = gamma*(I/N) = gamma*i
 
+% initial conditions
 E0 = E(t0);
 I0 = I(t0);
 R0 = R(t0);
@@ -101,6 +102,7 @@ I_s = f0*I;
 X_SEIIR = [S, E, I_a, I_s, R];
 X_ad_SEIIR = [S, E, I_a, I_s, R]/N;
 
+% initial conditions
 E0 = E(t0);
 I_a0 = I_a(t0);
 I_s0 = I_s(t0);
@@ -111,7 +113,7 @@ alpha0 = p_SEIR(2);
 gamma0 = p_SEIR(3);
 
 beta_a0 = 0.05;
-beta_s0 = 0.67; % cambiato
+beta_s0 = 0.67; % changed
 
 p0_SEIIR = [f0, alpha0, gamma0, beta_a0, beta_s0 ];
 p_SEIIR = fit_SEIIR(X_ad_SEIIR, X0_ad_SEIIR, p0_SEIIR, t0, tf);
@@ -133,6 +135,7 @@ D = cast(data.deceduti, 'double');
 X_SEIIRHD = [S, E, I_a, I_s, H, R, D];
 X_ad_SEIIRHD = [S, E, I_a, I_s, H, R, D]/N;
 
+% initial conditions
 E0 = E(t0);
 I_a0 = I_a(t0);
 I_s0 = I_s(t0);
@@ -147,7 +150,6 @@ gamma0 = p_SEIIR(3);
 beta_a0 = p_SEIIR(4);
 beta_s0 = p_SEIIR(5);
 
-%report settimanali ISS tasso ricovero
 nu_s0 = 0.08;
 mu0 = 0.0204;
 

@@ -20,9 +20,9 @@ addpath('./models/SEIIRHD');
 sizes = size(dates);
 size_data = sizes(2);
 N = 300516;
-%% PLOT FEBRUARY DATA
 t0 = find(dates=="21-Jan-2021"); 
 tf = find(dates=="11-Feb-2021"); 
+%% PLOT FEBRUARY DATA
 plot_data(data, dates(t0:tf), N, t0, tf, "./results/january/Molise/januaryPlot.png");
 %% FITTING SIR MODEL 
 beta0 = 0.962/N;  
@@ -68,6 +68,7 @@ X_ad_SEIR = [S, E, I, R]/N;
 % i' = alpha*(E/N)-gamma*(I/N) = alpha*e-gamma*i
 % r' = gamma*(I/N) = gamma*i
 
+% initial conditions
 E0 = E(t0);
 I0 = I(t0);
 R0 = R(t0);
@@ -75,7 +76,7 @@ S0 = N-E0-I0-R0;
 X0_ad_SEIR = [S0 E0 I0 R0]/N;
 
 S0 = N;
-tau = 5.1; %paper SEIR
+tau = 5.1; 
 alpha0=1/tau;
 
 % initial beta and gamma are taken from the previous simulation results 
@@ -93,7 +94,7 @@ plot_SEIR(X_SEIR, X0_ad_SEIR, N, p_SEIR, dates, t0, tf, tp,"./results/january/Mo
 %% FITTING SEIIR MODEL
 
 S = N-E-I-R;
-f0 = 0.6; %cambiato
+f0 = 0.6; 
 
 I_a = (1-f0)*I;
 I_s = f0*I;
@@ -101,6 +102,7 @@ I_s = f0*I;
 X_SEIIR = [S, E, I_a, I_s, R];
 X_ad_SEIIR = [S, E, I_a, I_s, R]/N;
 
+% initial conditions
 E0 = E(t0);
 I_a0 = I_a(t0);
 I_s0 = I_s(t0);
@@ -133,6 +135,7 @@ D = cast(data.deceduti, 'double');
 X_SEIIRHD = [S, E, I_a, I_s, H, R, D];
 X_ad_SEIIRHD = [S, E, I_a, I_s, H, R, D]/N;
 
+% initial conditions
 E0 = E(t0);
 I_a0 = I_a(t0);
 I_s0 = I_s(t0);
@@ -147,7 +150,6 @@ gamma0 = p_SEIIR(3);
 beta_a0 = p_SEIIR(4);
 beta_s0 = p_SEIIR(5);
 
-%report settimanali ISS tasso ricovero
 nu_s0 = 0.08;
 mu0 = 0.0204;
 

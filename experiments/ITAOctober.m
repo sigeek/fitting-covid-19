@@ -19,13 +19,13 @@ addpath('./models/SEIIRHD');
 sizes = size(dates);
 size_data = sizes(2);
 N = 60.*10^6;
+t0 = find(dates=="08-Oct-2020"); 
+tf = find(dates=="05-Nov-2020"); 
 %% PLOT OVERVIEW DATA
 % da rifare prima della consegna
 plot_data(data, dates, N, 1, size_data, "./results/overview/OverviewPlot.png");
 %% PLOT OCTOBER DATA
 close all
-t0 = find(dates=="08-Oct-2020"); 
-tf = find(dates=="05-Nov-2020"); 
 plot_data(data, dates(t0:tf), N, t0, tf, "./results/october/ITA/octoberPlot.png");
 %% FITTING SIR MODEL
 % [S, I, R]
@@ -83,6 +83,7 @@ X_ad_SEIR = [S, E, I, R]/N;
 % i' = alpha*(E/N)-gamma*(I/N) = alpha*e-gamma*i
 % r' = gamma*(I/N) = gamma*i
 
+% initial conditions
 E0 = E(t0);
 I0 = I(t0);
 R0 = R(t0);
@@ -117,6 +118,7 @@ I_s = f0*I;
 X_SEIIR = [S, E, I_a, I_s, R];
 X_ad_SEIIR = [S, E, I_a, I_s, R]/N;
 
+% initial conditions
 E0 = E(t0);
 I_a0 = I_a(t0);
 I_s0 = I_s(t0);
@@ -150,6 +152,7 @@ D = cast(data.deceduti, 'double');
 X_SEIIRHD = [S, E, I_a, I_s, H, R, D];
 X_ad_SEIIRHD = [S, E, I_a, I_s, H, R, D]/N;
 
+% initial conditions
 E0 = E(t0);
 I_a0 = I_a(t0);
 I_s0 = I_s(t0);
@@ -164,7 +167,6 @@ gamma0 = p_SEIIR(3);
 beta_a0 = p_SEIIR(4);
 beta_s0 = p_SEIIR(5);
 
-%report settimanali ISS tasso ricovero
 nu_s0 = 0.08;
 mu0 = 0.0204;
 
