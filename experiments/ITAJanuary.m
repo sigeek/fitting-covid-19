@@ -97,6 +97,12 @@ p0_SEIR = [beta0, alpha0, gamma0];
 p_SEIR = fit_SEIR(X_ad_SEIR, X0_ad_SEIR, p0_SEIR, t0, tf);
 fprintf("--- SEIR FITTING DONE --- \n");
 fprintf("beta: %f, alpha: %f, gamma: %f \n", p_SEIR(1), p_SEIR(2), p_SEIR(3));
+
+%%
+F = [0 p_SEIR(1); 0 0];
+V = [p_SEIR(2) 0; -p_SEIR(2) p_SEIR(3)];
+G = F*inv(V);
+R0 = eigs(G,1)
 %% PLOT SEIR
 close all
 tp = [7,14, 21];
