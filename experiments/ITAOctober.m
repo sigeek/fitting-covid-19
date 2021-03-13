@@ -20,7 +20,7 @@ sizes = size(dates);
 size_data = sizes(2);
 N = 60.*10^6;
 t0 = find(dates=="08-Oct-2020"); 
-tf = find(dates=="05-Nov-2020"); 
+tf = find(dates=="05-Nov-2021"); 
 %% PLOT OVERVIEW DATA
 % da rifare prima della consegna
 plot_data(data, dates, N, 1, size_data, "./results/overview/OverviewPlot.png");
@@ -43,16 +43,14 @@ gamma0 = 0.37;
 
 I = cast((data.totale_positivi), 'double'); 
 R = cast((data.dimessi_guariti), 'double');
-S = N-I-R;
+S = N-I;
 X_SIR = [S, I, R];
 X_ad_SIR = [S, I, R]/N;
 
 % initial conditions
-t0 = find(dates=="08-Oct-2020"); 
-tf = find(dates=="05-Nov-2020"); 
 I0 = I(t0);
 R0 = R(t0);
-S0 = N-I0-R0;
+S0 = N-I0;
 X0_ad_SIR = [S0 I0 R0]/N;
 
 beta0 = beta0*N;
@@ -64,7 +62,7 @@ fprintf("beta: %f, gamma: %f \n", p_SIR(1), p_SIR(2));
 %% PLOT SIR
 close all
 tp = [7,14, 21];
-plot_SIR(X_SIR, X0_ad_SIR, N, p_SIR, dates, t0, tf, tp,"./results/october/ITA/SIR_fitting.png");
+plot_SIR(X_SIR, X0_ad_SIR, N, p_SIR, dates, t0, tf, tp,"./results/october/ITA/SIR_fittinga.png");
 %% FITTING SEIR MODEL
 % [S, E, I, R]
 
