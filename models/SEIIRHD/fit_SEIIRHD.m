@@ -20,6 +20,7 @@ D = X(:, 7);
 t_vector = t0:1:tf;
 
 data = [E(t0:1:tf); I_a(t0:1:tf); I_s(t0:1:tf); H(t0:1:tf); R(t0:1:tf); D(t0:1:tf)];
-
-p = fminsearch(@(p) err_SEIIRHD(t_vector, data, p, X0),p0);
+lb = zeros(1,7);
+ub = ones(1,7);
+p = fmincon(@(p) err_SEIIRHD(t_vector, data, p, X0),p0, [], [],[], [], lb, ub);
 end

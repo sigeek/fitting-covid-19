@@ -19,8 +19,8 @@ addpath('./models/SEIIRHD');
 sizes = size(dates);
 size_data = sizes(2);
 N = 60.*10^6;
-t0 = find(dates=="08-Oct-2020"); 
-tf = find(dates=="05-Nov-2021"); 
+t0 = find(dates=="01-Oct-2020"); 
+tf = find(dates=="20-Nov-2020"); 
 %% PLOT OVERVIEW DATA
 % da rifare prima della consegna
 plot_data(data, dates, N, 1, size_data, "./results/overview/OverviewPlot.png");

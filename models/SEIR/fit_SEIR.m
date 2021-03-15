@@ -17,6 +17,7 @@ R = X(:, 4);
 t_vector = t0:1:tf;
 
 data = [E(t0:1:tf); I(t0:1:tf); R(t0:1:tf)];
-
-p = fminsearch(@(p) err_SEIR(t_vector, data, p, X0),p0);
+lb = zeros(1,3);
+ub = ones(1,3);
+p = fmincon(@(p) err_SEIR(t_vector, data, p, X0),p0, [], [], [], [], lb, ub);
 end
