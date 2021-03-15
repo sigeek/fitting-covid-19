@@ -20,8 +20,8 @@ addpath('./models/SEIIRHD');
 sizes = size(dates);
 size_data = sizes(2);
 N = 300516;
-t0 = find(dates=="21-Jan-2021"); 
-tf = find(dates=="11-Feb-2021"); 
+t0 = find(dates=="01-Jan-2021"); 
+tf = find(dates=="20-Feb-2021"); 
 %% PLOT FEBRUARY DATA
 plot_data(data, dates(t0:tf), N, t0, tf, "./results/january/Molise/januaryPlot.png");
 %% FITTING SIR MODEL 
