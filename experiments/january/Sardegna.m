@@ -174,7 +174,14 @@ fprintf("f0: %f, alpha: %f, gamma: %f, \n beta_a: %f, beta_s: %f \n nu_s0: %f, m
         p_SEIIRHD(4), p_SEIIRHD(5), p_SEIIRHD(6),...
         p_SEIIRHD(7));
 
+%% RO SEIIRHD
+F = [0 p_SEIIRHD(4) p_SEIIRHD(5); 0 0 0; 0 0 0];
+V = [p_SEIIRHD(2) 0 0; (-(p_SEIIRHD(2)*p_SEIIRHD(1))) (p_SEIIRHD(3) + p_SEIIRHD(6) + p_SEIIRHD(7)) 0; ((1-p_SEIIRHD(1))* p_SEIIRHD(2)) 0 p_SEIIRHD(3)];
+G = F*inv(V);
+R0 = eigs(G,1);
+fprintf("R0: %f\n", R0);
 %% PLOT SEIIRHD
 close all
 tp = [7,14, 21];
 plot_SEIIRHD(X_SEIIRHD, X0_ad_SEIIRHD, N, p_SEIIRHD, dates, t0, tf, tp, "./results/january/Sardegna/SEIIRHD_fitting.png");
+
