@@ -20,10 +20,10 @@ addpath('./models/SEIIRHD');
 sizes = size(dates);
 size_data = sizes(2);
 N = 300516;
-t0 = find(dates=="01-Oct-2020"); 
-tf = find(dates=="20-Nov-2020");
-%% PLOT DATA
-plot_data(data, dates(t0:tf), N, t0, tf, "./results/october/Molise/octoberPlot.png");
+t0 = find(dates=="20-Jan-2021"); 
+tf = find(dates=="20-Feb-2021"); 
+%% PLOT FEBRUARY DATA
+plot_data(data, dates(t0:tf), N, t0, tf, "./results/january/Molise/januaryPlot.png");
 %% FITTING SIR MODEL 
 beta0 = 0.962/N;  
 gamma0 = 0.37; 
@@ -46,10 +46,16 @@ p0_SIR = [beta0, gamma0];
 p_SIR = fit_SIR(X_ad_SIR, X0_ad_SIR, p0_SIR, t0, tf);
 fprintf("--- SIR FITTING DONE --- \n");
 fprintf("beta: %f, gamma: %f \n", p_SIR(1), p_SIR(2));
+%% R0 SIR 
+F = p_SIR(1);
+V = p_SIR(2);
+G = F*inv(V);
+R0 = eigs(G,1);
+fprintf("R0: %f \n", R0);
 %% PLOT SIR 
 close all
 tp = [7, 14, 21];
-plot_SIR(X_SIR, X0_ad_SIR, N, p_SIR, dates, t0, tf, tp, "./results/october/Molise/SIR_fitting.png");
+plot_SIR(X_SIR, X0_ad_SIR, N, p_SIR, dates, t0, tf, tp, "./results/january/Molise/SIR_fitting.png");
 %% FITTING SEIR MODEL
 % [S, E, I, R]
 
@@ -76,7 +82,7 @@ S0 = N-E0-I0-R0;
 X0_ad_SEIR = [S0 E0 I0 R0]/N;
 
 S0 = N;
-tau = 5.1; %paper SEIR
+tau = 5.1; 
 alpha0=1/tau;
 
 % initial beta and gamma are taken from the previous simulation results 
@@ -87,14 +93,20 @@ p0_SEIR = [beta0, alpha0, gamma0];
 p_SEIR = fit_SEIR(X_ad_SEIR, X0_ad_SEIR, p0_SEIR, t0, tf);
 fprintf("--- SEIR FITTING DONE --- \n");
 fprintf("beta: %f, alpha: %f, gamma: %f \n", p_SEIR(1), p_SEIR(2), p_SEIR(3));
+%% R0 SEIR 
+F = [0 p_SEIR(1); 0 0];
+V = [p_SEIR(2) 0; -p_SEIR(2) p_SEIR(3)];
+G = F*inv(V);
+R0 = eigs(G,1);
+fprintf("R0: %f\n", R0);
 %% PLOT SEIR
 close all
 tp = [7,14, 21];
-plot_SEIR(X_SEIR, X0_ad_SEIR, N, p_SEIR, dates, t0, tf, tp,"./results/october/Molise/SEIR_fitting.png");
+plot_SEIR(X_SEIR, X0_ad_SEIR, N, p_SEIR, dates, t0, tf, tp,"./results/january/Molise/SEIR_fitting.png");
 %% FITTING SEIIR MODEL
 
 S = N-E-I-R;
-f0 = 0.6; %different initial value
+f0 = 0.6; 
 
 I_a = (1-f0)*I;
 I_s = f0*I;
@@ -123,7 +135,7 @@ fprintf("f0: %f, alpha: %f, gamma: %f, beta_a: %f, beta_s: %f \n"...
 %% PLOT SEIIR
 close all 
 tp = [7,14, 21];
-plot_SEIIR(X_SEIIR, X0_ad_SEIIR, N, p_SEIIR, dates, t0, tf, tp, "./results/october/Molise/SEIIR_fitting.png");
+plot_SEIIR(X_SEIIR, X0_ad_SEIIR, N, p_SEIIR, dates, t0, tf, tp, "./results/january/Molise/SEIIR_fitting.png");
 %% FITTING SEIIRHD MODEL
 
 S = N-E-I-R;
@@ -165,4 +177,4 @@ fprintf("f0: %f, alpha: %f, gamma: %f, \n beta_a: %f, beta_s: %f, \n nu_s0: %f, 
 %% PLOT SEIIRHD
 close all
 tp = [7,14, 21];
-plot_SEIIRHD(X_SEIIRHD, X0_ad_SEIIRHD, N, p_SEIIRHD, dates, t0, tf, tp, "./results/october/Molise/SEIIRHD_fitting.png");
+plot_SEIIRHD(X_SEIIRHD, X0_ad_SEIIRHD, N, p_SEIIRHD, dates, t0, tf, tp, "./results/january/Molise/SEIIRHD_fitting.png");

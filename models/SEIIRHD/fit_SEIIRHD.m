@@ -19,8 +19,14 @@ D = X(:, 7);
 % time vector for fitting
 t_vector = t0:1:tf;
 
-data = [E(t0:1:tf); I_a(t0:1:tf); I_s(t0:1:tf); H(t0:1:tf); R(t0:1:tf); D(t0:1:tf)];
+
+data = [E(t0:1:tf); I_a(t0:1:tf); I_s(t0:1:tf); H(t0:1:tf); ...
+    R(t0:1:tf); D(t0:1:tf)];
 lb = zeros(1,7);
-ub = ones(1,7);
-p = fmincon(@(p) err_SEIIRHD(t_vector, data, p, X0),p0, [], [],[], [], lb, ub);
+ub = [0.8, 1, 1, 1, 1, 0.1, 0.1];
+options=optimoptions(@fmincon, ...
+    'MaxFunctionEvaluations', 10000,'FunctionTolerance',1e-8,...
+    'StepTolerance', 1e-8 );
+p = fmincon(@(p) err_SEIIRHD(t_vector, data, p, X0),p0,...
+    [], [],[], [], lb, ub, [], options);
 end

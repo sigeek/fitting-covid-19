@@ -16,17 +16,17 @@ addpath('./models/SEIIR');
 addpath('./models/SEIIRHD');
 
 %retrieve the data structs
-[data, dates] = getDataByRegion("Sardegna");
+[data, dates] = getDataByRegion("Molise");
 sizes = size(dates);
 size_data = sizes(2);
-N = 1611621;
-t0 = find(dates=="01-Jan-2021"); 
-tf = find(dates=="20-Feb-2021"); 
-%% PLOT FEBRUARY DATA
-plot_data(data, dates(t0:tf), N, t0, tf, "./results/january/Sardegna/januaryPlot.png");
+N = 300516;
+t0 = find(dates=="08-Oct-2020"); 
+tf = find(dates=="23-Nov-2020"); 
+%% PLOT DATA
+plot_data(data, dates(t0:tf), N, t0, tf, "./results/october/Molise/octoberPlot.png");
 %% FITTING SIR MODEL 
-beta0 = 0.0637/N;  
-gamma0 = 0.0123; 
+beta0 = 0.962/N;  
+gamma0 = 0.37; 
 
 I = cast((data.totale_positivi), 'double'); 
 R = cast((data.dimessi_guariti), 'double');
@@ -46,10 +46,16 @@ p0_SIR = [beta0, gamma0];
 p_SIR = fit_SIR(X_ad_SIR, X0_ad_SIR, p0_SIR, t0, tf);
 fprintf("--- SIR FITTING DONE --- \n");
 fprintf("beta: %f, gamma: %f \n", p_SIR(1), p_SIR(2));
+%% R0 SIR 
+F = p_SIR(1);
+V = p_SIR(2);
+G = F*inv(V);
+R0 = eigs(G,1);
+fprintf("R0: %f \n", R0);
 %% PLOT SIR 
 close all
 tp = [7, 14, 21];
-plot_SIR(X_SIR, X0_ad_SIR, N, p_SIR, dates, t0, tf, tp, "./results/january/Sardegna/SIR_fitting.png");
+plot_SIR(X_SIR, X0_ad_SIR, N, p_SIR, dates, t0, tf, tp, "./results/october/Molise/SIR_fitting.png");
 %% FITTING SEIR MODEL
 % [S, E, I, R]
 
@@ -76,7 +82,7 @@ S0 = N-E0-I0-R0;
 X0_ad_SEIR = [S0 E0 I0 R0]/N;
 
 S0 = N;
-tau = 5.5096;
+tau = 5.1; %paper SEIR
 alpha0=1/tau;
 
 % initial beta and gamma are taken from the previous simulation results 
@@ -87,14 +93,20 @@ p0_SEIR = [beta0, alpha0, gamma0];
 p_SEIR = fit_SEIR(X_ad_SEIR, X0_ad_SEIR, p0_SEIR, t0, tf);
 fprintf("--- SEIR FITTING DONE --- \n");
 fprintf("beta: %f, alpha: %f, gamma: %f \n", p_SEIR(1), p_SEIR(2), p_SEIR(3));
+%% R0 SEIR 
+F = [0 p_SEIR(1); 0 0];
+V = [p_SEIR(2) 0; -p_SEIR(2) p_SEIR(3)];
+G = F*inv(V);
+R0 = eigs(G,1);
+fprintf("R0: %f\n", R0);
 %% PLOT SEIR
 close all
 tp = [7,14, 21];
-plot_SEIR(X_SEIR, X0_ad_SEIR, N, p_SEIR, dates, t0, tf, tp,"./results/january/Sardegna/SEIR_fitting.png");
+plot_SEIR(X_SEIR, X0_ad_SEIR, N, p_SEIR, dates, t0, tf, tp,"./results/october/Molise/SEIR_fitting.png");
 %% FITTING SEIIR MODEL
 
 S = N-E-I-R;
-f0 = 0.4648;
+f0 = 0.6; %different initial value
 
 I_a = (1-f0)*I;
 I_s = f0*I;
@@ -112,18 +124,18 @@ X0_ad_SEIIR = [S0 E0 I_a0 I_s0 R0]/N;
 alpha0 = p_SEIR(2);
 gamma0 = p_SEIR(3);
 
-beta_a0 = 0.108;
-beta_s0 = 0.0103; % cambiato
+beta_a0 = 0.05;
+beta_s0 = 0.675281;
 
 p0_SEIIR = [f0, alpha0, gamma0, beta_a0, beta_s0 ];
 p_SEIIR = fit_SEIIR(X_ad_SEIIR, X0_ad_SEIIR, p0_SEIIR, t0, tf);
 fprintf("--- SEIIR FITTING DONE --- \n");
-fprintf("f0: %f, alpha: %f, gamma: %f, beta_a: %f, beta_s: %f\n"...
+fprintf("f0: %f, alpha: %f, gamma: %f, beta_a: %f, beta_s: %f \n"...
     , p_SEIIR(1), p_SEIIR(2), p_SEIIR(3), p_SEIIR(4), p_SEIIR(5));
 %% PLOT SEIIR
 close all 
 tp = [7,14, 21];
-plot_SEIIR(X_SEIIR, X0_ad_SEIIR, N, p_SEIIR, dates, t0, tf, tp, "./results/january/Sardegna/SEIIR_fitting.png");
+plot_SEIIR(X_SEIIR, X0_ad_SEIIR, N, p_SEIIR, dates, t0, tf, tp, "./results/october/Molise/SEIIR_fitting.png");
 %% FITTING SEIIRHD MODEL
 
 S = N-E-I-R;
@@ -150,14 +162,14 @@ gamma0 = p_SEIIR(3);
 beta_a0 = p_SEIIR(4);
 beta_s0 = p_SEIIR(5);
 
-nu_s0 = 0.0076;
-mu0 = 0.0013;
+nu_s0 = 0.08;
+mu0 = 0.0204;
 
 p0_SEIIRHD = [f0, alpha0, gamma0, beta_a0, beta_s0, nu_s0, mu0];
 
 p_SEIIRHD = fit_SEIIRHD(X_ad_SEIIRHD, X0_ad_SEIIRHD, p0_SEIIRHD, t0, tf);
 fprintf("--- SEIIRHD FITTING DONE --- \n");
-fprintf("f0: %f, alpha: %f, gamma: %f, \n beta_a: %f, beta_s: %f \n nu_s0: %f, mu0: %f \n"...
+fprintf("f0: %f, alpha: %f, gamma: %f, \n beta_a: %f, beta_s: %f, \n nu_s0: %f, mu0: %f \n"...
         , p_SEIIRHD(1), p_SEIIRHD(2), p_SEIIRHD(3), ...
         p_SEIIRHD(4), p_SEIIRHD(5), p_SEIIRHD(6),...
         p_SEIIRHD(7));
@@ -165,4 +177,4 @@ fprintf("f0: %f, alpha: %f, gamma: %f, \n beta_a: %f, beta_s: %f \n nu_s0: %f, m
 %% PLOT SEIIRHD
 close all
 tp = [7,14, 21];
-plot_SEIIRHD(X_SEIIRHD, X0_ad_SEIIRHD, N, p_SEIIRHD, dates, t0, tf, tp, "./results/january/Sardegna/SEIIRHD_fitting.png");
+plot_SEIIRHD(X_SEIIRHD, X0_ad_SEIIRHD, N, p_SEIIRHD, dates, t0, tf, tp, "./results/october/Molise/SEIIRHD_fitting.png");

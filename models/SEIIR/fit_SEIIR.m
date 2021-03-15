@@ -18,7 +18,10 @@ R = X(:, 5);
 t_vector = t0:1:tf;
 
 data = [E(t0:1:tf); I_a(t0:1:tf); I_s(t0:1:tf); R(t0:1:tf)];
-lb = zeros(1,4);
-ub = ones(1,4);
-p = fmincon(@(p) err_SEIIR(t_vector, data, p, X0),p0, [], [], [], [], lb, ub);
+lb = zeros(1,5);
+ub = [0.8, 1, 1, 1, 1];
+options=optimoptions(@fmincon, ...
+    'MaxFunctionEvaluations', 10000);
+p = fmincon(@(p) err_SEIIR(t_vector, data, p, X0),p0,...
+    [], [], [], [], lb, ub, [], options);
 end
