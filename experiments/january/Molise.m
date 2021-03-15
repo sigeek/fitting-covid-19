@@ -181,7 +181,9 @@ plot_SEIIRHD(X_SEIIRHD, X0_ad_SEIIRHD, N, p_SEIIRHD, dates, t0, tf, tp, "./resul
 
 %% RO SEIIRHD
 F = [0 p_SEIIRHD(4) p_SEIIRHD(5); 0 0 0; 0 0 0];
-V = [p_SEIIRHD(2) 0 0; (-(p_SEIIRHD(2)*p_SEIIRHD(1))) (p_SEIIRHD(3) + p_SEIIRHD(6) + p_SEIIRHD(7)) 0; ((1-p_SEIIRHD(1))* p_SEIIRHD(2)) 0 p_SEIIRHD(3)];
+V = [p_SEIIRHD(2) 0 0; ...
+    ((p_SEIIRHD(1)-1)* p_SEIIRHD(2)) 0 p_SEIIRHD(3);
+    (-(p_SEIIRHD(2)*p_SEIIRHD(1))) (p_SEIIRHD(3) + p_SEIIRHD(6) + p_SEIIRHD(7)) 0];
 G = F*inv(V);
 R0 = eigs(G,1);
 fprintf("R0: %f\n", R0);

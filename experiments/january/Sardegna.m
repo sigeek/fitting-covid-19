@@ -176,7 +176,9 @@ fprintf("f0: %f, alpha: %f, gamma: %f, \n beta_a: %f, beta_s: %f \n nu_s0: %f, m
 
 %% RO SEIIRHD
 F = [0 p_SEIIRHD(4) p_SEIIRHD(5); 0 0 0; 0 0 0];
-V = [p_SEIIRHD(2) 0 0; (-(p_SEIIRHD(2)*p_SEIIRHD(1))) (p_SEIIRHD(3) + p_SEIIRHD(6) + p_SEIIRHD(7)) 0; ((1-p_SEIIRHD(1))* p_SEIIRHD(2)) 0 p_SEIIRHD(3)];
+V = [p_SEIIRHD(2) 0 0; ...
+    ((p_SEIIRHD(1)-1)* p_SEIIRHD(2)) 0 p_SEIIRHD(3);
+    (-(p_SEIIRHD(2)*p_SEIIRHD(1))) (p_SEIIRHD(3) + p_SEIIRHD(6) + p_SEIIRHD(7)) 0];
 G = F*inv(V);
 R0 = eigs(G,1);
 fprintf("R0: %f\n", R0);
