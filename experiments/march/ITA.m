@@ -17,7 +17,7 @@ load dates.mat
 N = 60.*10^6;
 t0 = find(dates=="20-Feb-2021"); 
 tf = find(dates=="14-Mar-2021"); 
-%% FITTING SEIIRHD MODEL
+%% SEIIRHD MODEL PARAMETERS
 
 I = cast((data.totale_positivi), 'double');
 E = 0.3*(I);

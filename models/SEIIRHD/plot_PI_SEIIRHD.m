@@ -8,6 +8,7 @@ function plot_PI_SEIIRHD(X, X0, N, dates, t0, tf, tp, path)
 % t0      time at which the fitting starts
 % tf      time at which the fitting ends  
 % tp      vector containing the times for the predictions
+% path    path for saving the plot obtained
 
 % Output
 %         Void function
