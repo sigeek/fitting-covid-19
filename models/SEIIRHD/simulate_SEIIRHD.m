@@ -11,37 +11,50 @@ function simulate_SEIIRHD(timeV, X1, X2, X3, X4, path)
 % Output
 %         Void function
 
-E1 = X1(:, 2);
 I_a1 = X1(:, 3);
 I_s1 = X1(:, 4);
 H1 = X1(:, 5);
-R1 = X1(:, 6);
 D1 = X1(:, 7);
 
-E2 = X2(:, 2);
 I_a2 = X2(:, 3);
 I_s2 = X2(:, 4);
 H2 = X2(:, 5);
-R2 = X2(:, 6);
 D2 = X2(:, 7);
 
-E3 = X3(:, 2);
 I_a3 = X3(:, 3);
 I_s3 = X3(:, 4);
 H3 = X3(:, 5);
-R3 = X3(:, 6);
 D3 = X3(:, 7);
 
-E4 = X4(:, 2);
 I_a4 = X4(:, 3);
 I_s4 = X4(:, 4);
 H4 = X4(:, 5);
-R4 = X4(:, 6);
 D4 = X4(:, 7);
+
+fprintf("R0 = 0.5: "); 
+fprintf("Max I_a: %f, ", max(I_a1)); 
+fprintf("Max I_s: %f\n", max(I_s1)); 
+fprintf("Max H: %f, ", max(H1)); 
+fprintf("Max D: %f\n", max(D1)); 
+fprintf("R0 = 1: "); 
+fprintf("Max I_a: %f, ", max(I_a2)); 
+fprintf("Max I_s: %f\n", max(I_s2)); 
+fprintf("Max H: %f, ", max(H2)); 
+fprintf("Max D: %f\n", max(D2)); 
+fprintf("R0 = 1.5: "); 
+fprintf("Max I_a: %f, ", max(I_a3)); 
+fprintf("Max I_s: %f\n", max(I_s3)); 
+fprintf("Max H: %f, ", max(H3)); 
+fprintf("Max D: %f\n", max(D3)); 
+fprintf("R0 = 3"); 
+fprintf("Max I_a: %f, ", max(I_a4)); 
+fprintf("Max I_s: %f\n", max(I_s4)); 
+fprintf("Max H: %f, ", max(H4)); 
+fprintf("Max D: %f\n", max(D4)); 
 
 x0=100;
 y0=100;
-width=900;
+width=1200;
 height=700;
 set(gcf,'position',[x0,y0,width,height]);
 

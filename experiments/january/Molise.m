@@ -106,7 +106,7 @@ plot_SEIR(X_SEIR, X0_ad_SEIR, N, p_SEIR, dates, t0, tf, tp,"./results/january/Mo
 %% FITTING SEIIR MODEL
 
 S = N-E-I-R;
-f0 = 0.6; 
+f0 = 0.4264; 
 
 I_a = (1-f0)*I;
 I_s = f0*I;
