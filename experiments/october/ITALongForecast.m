@@ -67,8 +67,8 @@ R0 = eigs(G,1);
 fprintf("R0: %f \n", R0);
 %% PLOT SIR
 close all
-tp = [7,14, 21];
-plot_SIR(X_SIR, X0_ad_SIR, N, p_SIR, dates, t0, tf, tp,"./results/october/ITA/SIR_fitting.png");
+tp = [50,75,120];
+plot_SIR(X_SIR, X0_ad_SIR, N, p_SIR, dates, t0, tf, tp,"./results/october/ITA/SIR_fittinga.png");
 %% FITTING SEIR MODEL
 % [S, E, I, R]
 
@@ -201,6 +201,6 @@ fprintf("R0: %f\n", R0);
 
 %% PLOT SEIIRHD
 close all
-tp = [7,14, 21];
+tp = [30,60,120];
 plot_SEIIRHD(X_SEIIRHD, X0_ad_SEIIRHD, N, p_SEIIRHD, dates, t0, tf, tp,...
-    "./results/october/ITA/SEIIRHD_fitting.png");
+    "./results/simulations/SEIIRHDLimitations.png");
