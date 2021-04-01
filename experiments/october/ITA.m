@@ -204,3 +204,9 @@ close all
 tp = [7,14, 21];
 plot_SEIIRHD(X_SEIIRHD, X0_ad_SEIIRHD, N, p_SEIIRHD, dates, t0, tf, tp,...
     "./results/october/ITA/SEIIRHD_fitting.png");
+
+%% COMPUTE ERRORS 
+close all
+tp = [60];
+plot_SEIIRHD(X_SEIIRHD, X0_ad_SEIIRHD, N, p_SEIIRHD, dates, t0, tf, tp, ...
+    "./results/october/ITA/trailSEIIRHD.png");

@@ -200,3 +200,12 @@ V = [p_SEIIRHD(2) 0 0; ...
 G = F*inv(V);
 R0 = eigs(G,1);
 fprintf("R0: %f\n", R0);
+
+%% COMPUTE ERRORS 
+close all
+tp = [30]; %30
+t1 = datetime(2020,02,24,0,0,0);
+t2 = datetime(2021,12,31,0,0,0);
+dates = t1:t2;
+plot_SEIIRHD(X_SEIIRHD, X0_ad_SEIIRHD, N, p_SEIIRHD, dates, t0, tf, tp, ...
+    "./results/january/ITA/errorSEIIRHD.png");

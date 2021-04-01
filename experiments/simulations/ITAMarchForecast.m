@@ -12,7 +12,7 @@ addpath('./models/SEIIRHD');
 %retrieve the data structs
 [data, dates] = getData;
 t1 = datetime(2020,02,24,0,0,0);
-t2 = datetime(2022,12,31,0,0,0);
+t2 = datetime(2025,12,31,0,0,0);
 dates = t1:t2;
 N = 60.*10^6;
 %% SEIIRHD MODEL PARAMETERS
@@ -31,7 +31,7 @@ R0 = R(t0);
 D0 = D(t0);
 S0 = N-E0-I0-R0;
 
-timeV = t0:1:t0+500;
+timeV = t0:1:t0+1200;
 %%
 p = [0.5164, 0.0884, 0.0351, ...
     0.0217, 0.0253, 0.0039, 0.0022];
@@ -44,5 +44,5 @@ X0= [S0 E0 I_a0 I_s0 H0 R0 D0];
 
 [t,x] = ode23s(@(t,x) SEIIRHD(t,x, p), timeV, X0);  
 %%
-forecast_SEIIRHD(dates(timeV), x,...
+forecast_SEIIRHD(dates(timeV), x, dates,...
     "./results/simulations/ITA/SEIIRHDMarchForecast.png")

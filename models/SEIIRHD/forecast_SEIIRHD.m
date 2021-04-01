@@ -1,8 +1,9 @@
-function forecast_SEIIRHD(timeV, X1, path)
+function forecast_SEIIRHD(timeV, X1, dates, path)
 
 % Input 
 % timeV   time vector used as x-axis
 % X1      vector containg the ODE solution 
+% dates   tove vector with all the dates
 % path    path for saving the plot obtained
 
 % Output
@@ -24,6 +25,49 @@ fprintf("Min I_a: %f, day: %d \n",minI_a1, mindayIa1);
 fprintf("Min I_s: %f, day: %d \n", minI_s1, mindayIs1);
 fprintf("----\n")
 
+t1 = find(dates=="01-Jun-2021"); 
+t2 = find(dates=="01-Sep-2021"); 
+t3 = find(dates=="01-Dec-2021"); 
+t4 = find(dates=="01-Mar-2022"); 
+t5 = find(dates=="01-Jun-2022"); 
+t6 = find(dates=="01-Sep-2022"); 
+t7 = find(dates=="01-Dec-2022");
+
+I = I_a1+I_s1 * 10^7;
+fprintf("June 2021: \n");
+fprintf("I: %f\n",I(t1));
+fprintf("H: %f\n",H1(t1));
+fprintf("D: %f\n",D1(t1));
+
+fprintf("September 2021: \n");
+fprintf("I: %f\n",I(t2));
+fprintf("H: %f\n",H1(t2));
+fprintf("D: %f\n",D1(t2));
+
+fprintf("December 2021: \n");
+fprintf("I: %f\n",I(t3));
+fprintf("H: %f\n",H1(t3));
+fprintf("D: %f\n",D1(t3));
+
+fprintf("March 2022: \n");
+fprintf("I: %f\n",I(t4));
+fprintf("H: %f\n",H1(t4));
+fprintf("D: %f\n",D1(t4));
+
+fprintf("June 2022: \n");
+fprintf("I: %f\n",I(t5));
+fprintf("H: %f\n",H1(t5));
+fprintf("D: %f\n",D1(t5));
+
+fprintf("September 2022: \n");
+fprintf("I: %f\n",I(t6));
+fprintf("H: %f\n",H1(t6));
+fprintf("D: %f\n",D1(t6));
+
+fprintf("December 2022: \n");
+fprintf("I: %f\n",I(t7));
+fprintf("H: %f\n",H1(t7));
+fprintf("D: %f\n",D1(t7));
 
 x0=100;
 y0=100;
