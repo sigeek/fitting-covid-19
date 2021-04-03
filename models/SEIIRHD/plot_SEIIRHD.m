@@ -33,8 +33,11 @@ for i = 1:size(tp, 2)
     D_pred = X(:, 7);
     len_train = tf-t0;
     
-    compute_errors(E(tf:tf+tp(i)), I_s(tf:tf+tp(i)), H(tf:tf+tp(i)),...
-    R(tf:tf+tp(i)), D(tf:tf+tp(i)), X(len_train:len_train+tp(i))*N)
+    
+    compute_errors(I_s(tf:tf+tp(i)), H(tf:tf+tp(i)),...
+    R(tf:tf+tp(i)), D(tf:tf+tp(i)), N*Is_pred(len_train:len_train+tp(i)), ...
+    N*H_pred(len_train:len_train+tp(i)), N*R_pred(len_train:len_train+tp(i)), ...
+    N*D_pred(len_train:len_train+tp(i)));
 
     x0=100;
     y0=100;

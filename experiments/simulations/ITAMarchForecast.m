@@ -41,8 +41,11 @@ I_s = f*I;
 I_a0 = I_a(t0);
 I_s0 = I_s(t0);
 X0= [S0 E0 I_a0 I_s0 H0 R0 D0];
+Xreal = [I_a I_s D];
 
 [t,x] = ode23s(@(t,x) SEIIRHD(t,x, p), timeV, X0);  
 %%
+tini = find(dates=="30-Mar-2020"); 
 forecast_SEIIRHD(dates(timeV), x, dates,...
+    Xreal, tini, t0, ...
     "./results/simulations/ITA/SEIIRHDMarchForecast.png")

@@ -1,13 +1,20 @@
-function forecast_SEIIRHD(timeV, X1, dates, path)
+function forecast_SEIIRHD(timeV, X1, dates, Xreal, t0, tf, path)
 
 % Input 
 % timeV   time vector used as x-axis
 % X1      vector containg the ODE solution 
-% dates   tove vector with all the dates
+% dates   vector with all the dates
+% Xreal   real data
+% t0      start real data      
+% tf      end real data
 % path    path for saving the plot obtained
 
 % Output
 %         Void function
+
+I_a_real = Xreal(:, 1);
+I_s_real = Xreal(:, 2);
+D_real = Xreal(:, 3);
 
 I_a1 = X1(:, 3);
 I_s1 = X1(:, 4);
@@ -36,12 +43,10 @@ t7 = find(dates=="01-Dec-2022");
 I = I_a1+I_s1 * 10^7;
 fprintf("June 2021: \n");
 fprintf("I: %f\n",I(t1));
-fprintf("H: %f\n",H1(t1));
 fprintf("D: %f\n",D1(t1));
 
 fprintf("September 2021: \n");
 fprintf("I: %f\n",I(t2));
-fprintf("H: %f\n",H1(t2));
 fprintf("D: %f\n",D1(t2));
 
 fprintf("December 2021: \n");
@@ -51,22 +56,18 @@ fprintf("D: %f\n",D1(t3));
 
 fprintf("March 2022: \n");
 fprintf("I: %f\n",I(t4));
-fprintf("H: %f\n",H1(t4));
 fprintf("D: %f\n",D1(t4));
 
 fprintf("June 2022: \n");
 fprintf("I: %f\n",I(t5));
-fprintf("H: %f\n",H1(t5));
 fprintf("D: %f\n",D1(t5));
 
 fprintf("September 2022: \n");
 fprintf("I: %f\n",I(t6));
-fprintf("H: %f\n",H1(t6));
 fprintf("D: %f\n",D1(t6));
 
 fprintf("December 2022: \n");
 fprintf("I: %f\n",I(t7));
-fprintf("H: %f\n",H1(t7));
 fprintf("D: %f\n",D1(t7));
 
 x0=100;
@@ -77,22 +78,31 @@ set(gcf,'position',[x0,y0,width,height]);
 
 % I_a PLOT
 subplot(2,1,1);
-plot(timeV,I_a1,'r-', 'Linewidth', 1.5);hold on
-plot(timeV,I_s1,'Color', '#D95319', 'Linewidth', 1.5);
+xline(dates(tf),'--', 'Color', [17 17 17]/255);hold on;
+plot(dates(t0:tf),I_a_real(t0:tf),'r', 'LineWidth',1.5);hold on;
+plot(timeV,I_a1,'r:', 'Linewidth', 1.5);hold on
+plot(dates(t0:tf),I_s_real(t0:tf),'Color', '#D95319', 'LineWidth',1.5);hold on;
+plot(timeV,I_s1,':', 'Color', '#D95319', 'Linewidth', 1.5);
 xlabel('Days');ylabel('Number of individuals');
-legend('I_a (forecast)', 'I_s (forecast)', ...
+legend('Start forecast',...
+    'I_a (reported)', 'I_a (forecast)', ...
+    'I_s (reported)', 'I_s (forecast)', ...
     'Location', 'northeast');
-set(gca,'XLim',[timeV(1), timeV(501)]);
+set(gca,'XLim',[dates(t0), timeV(501)]);
 title(sprintf('SEIIRHD model forecast'));
 
 % H PLOT
 subplot(2,1,2);
-plot(timeV,H1,'c-', 'Linewidth', 1.5);hold on
-plot(timeV,D1,'k-', 'Linewidth', 1.5);
+%plot(timeV,H1,'c-', 'Linewidth', 1.5);hold on
+xline(dates(tf),'--', 'Color', [17 17 17]/255);hold on;
+plot(dates(t0:tf),D_real(t0:tf),'-', 'Color', [17 17 17]/255, 'LineWidth',1.5);hold on;
+plot(timeV,D1,'k:', 'Linewidth', 1.5);
 xlabel('Days');ylabel('Number of individuals');
-legend('H (forecast)','D (forecast)',...
+legend('Start forecast',...
+    'D (reported)',...
+    'D (forecast)',...
     'Location', 'northeast');
-set(gca,'XLim',[timeV(1), timeV(501)]);
+set(gca,'XLim',[dates(t0), timeV(501)]);
 title(sprintf('SEIIRHD model forecast'));
 
 saveas(gcf,path)
