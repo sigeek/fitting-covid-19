@@ -1,5 +1,3 @@
-# COVID-19 epidemic in Italy: epidemiological models
+# Predicting and analyzing the COVID-19 pandemicin Italy using SEIR-type and deep learningmodels:  a comparative study
 
-<!-- [`Presentaion`](https://nbviewer.jupyter.org/github/sigeek/fitting-covid-19/blob/main/presentation.ipynb) - -->
-[`Tableau Views`](https://public.tableau.com/profile/silvia5108#!/vizhome/Covid19Italia_16146765468140/Casi) \
-... work in  progress ...
+[`Presentaion`](https://github.com/sigeek/fitting-covid-19/blob/main/doc/presentation.pdf) - [`Report`](https://github.com/sigeek/fitting-covid-19/blob/main/doc/report.pdf)
