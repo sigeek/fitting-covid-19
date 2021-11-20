@@ -1,7 +1,7 @@
 # Predicting and analyzing the COVID-19 pandemicin Italy using SEIR-type and deep learning models:  a comparative study
 
 This repository contains the code used for the project.
-[`Presentaion`](https://github.com/sigeek/fitting-covid-19/blob/main/doc/presentation.pdf) - [`Report`](https://github.com/sigeek/fitting-covid-19/blob/main/doc/report.pdf)
+[`Presentation`](https://github.com/sigeek/fitting-covid-19/blob/main/doc/presentation.pdf) - [`Report`](https://github.com/sigeek/fitting-covid-19/blob/main/doc/report.pdf)
 
 # Results 
 
